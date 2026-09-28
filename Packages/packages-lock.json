@@ -34,7 +34,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ai.navigation": {
-      "version": "2.0.14",
+      "version": "2.0.15",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -84,6 +84,12 @@
       "source": "builtin",
       "dependencies": {}
     },
+    "com.unity.graph-authoring": {
+      "version": "1.0.0",
+      "depth": 2,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.ide.visualstudio": {
       "version": "2.0.28",
       "depth": 0,
@@ -121,6 +127,59 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.profiling.core": {
+      "version": "1.0.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.core": {
+      "version": "17.6.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.burst": "1.8.14",
+        "com.unity.collections": "2.4.3",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.profiling.core": "1.0.3"
+      }
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "17.6.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "17.6.0",
+        "com.unity.shadergraph": "17.6.0",
+        "com.unity.render-pipelines.universal-config": "17.6.0"
+      }
+    },
+    "com.unity.render-pipelines.universal-config": {
+      "version": "17.6.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "17.6.0"
+      }
+    },
+    "com.unity.searcher": {
+      "version": "4.9.5",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "17.6.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "17.6.0",
+        "com.unity.searcher": "4.9.5",
+        "com.unity.graph-authoring": "1.0.0"
+      }
     },
     "com.unity.test-framework": {
       "version": "1.8.0",
