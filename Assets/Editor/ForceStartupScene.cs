@@ -2,36 +2,39 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-[InitializeOnLoad]
-public class ForceStartupScene
+namespace ProjectKCPC.Assets.Editor
 {
-    private const string previousScenePathKey = "PreviousSceneKey";
-
-    private static string bootScenePath = "Assets/_project-kcpc/_Scenes/BootScene.unity";
-
-    static ForceStartupScene()
-        => EditorApplication.playModeStateChanged += HandlePlayModeChanged;
-
-    private static void HandlePlayModeChanged(PlayModeStateChange state)
+    [InitializeOnLoad]
+    public class ForceStartupScene
     {
-        if (state == PlayModeStateChange.ExitingEditMode)
-        {
-            string currentScene = EditorSceneManager.GetActiveScene().path;
-            EditorPrefs.SetString(previousScenePathKey, currentScene);
+        private const string previousScenePathKey = "PreviousSceneKey";
 
-            if (currentScene != bootScenePath)
+        private static string bootScenePath = "Assets/_project-kcpc/_Scenes/BootScene.unity";
+
+        static ForceStartupScene()
+            => EditorApplication.playModeStateChanged += HandlePlayModeChanged;
+
+        private static void HandlePlayModeChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.ExitingEditMode)
             {
-                EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-                EditorSceneManager.OpenScene(bootScenePath);
+                string currentScene = EditorSceneManager.GetActiveScene().path;
+                EditorPrefs.SetString(previousScenePathKey, currentScene);
+
+                if (currentScene != bootScenePath)
+                {
+                    EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+                    EditorSceneManager.OpenScene(bootScenePath);
+                }
             }
-        }
-        else if (state == PlayModeStateChange.EnteredEditMode)
-        {
-            string previousScenePath = EditorPrefs.GetString(previousScenePathKey);
-
-            if (!string.IsNullOrEmpty(previousScenePath) && previousScenePath != bootScenePath)
+            else if (state == PlayModeStateChange.EnteredEditMode)
             {
-                EditorSceneManager.OpenScene(previousScenePath);
+                string previousScenePath = EditorPrefs.GetString(previousScenePathKey);
+
+                if (!string.IsNullOrEmpty(previousScenePath) && previousScenePath != bootScenePath)
+                {
+                    EditorSceneManager.OpenScene(previousScenePath);
+                }
             }
         }
     }
