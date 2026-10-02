@@ -1,3 +1,5 @@
+using FishNet.Managing;
+using ProjectKCPC.Scripts.Lobby;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -5,6 +7,8 @@ using VContainer.Unity;
 public class GameLifeTimeScope : LifetimeScope
 {
     [SerializeField] private StaticData _staticData;
+    [SerializeField] private NetworkManager _netManager;
+    [SerializeField] private FishySteamworks.FishySteamworks _steamworks;
 
     protected override void Awake()
     {
@@ -15,8 +19,11 @@ public class GameLifeTimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Singleton);
+        builder.RegisterComponent(_netManager);
+        builder.RegisterComponent(_steamworks);
         builder.RegisterInstance(_staticData);
-        Debug.Log("Bootstrapping");
+
+        builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<Lobby>(Lifetime.Singleton);
     }
 }

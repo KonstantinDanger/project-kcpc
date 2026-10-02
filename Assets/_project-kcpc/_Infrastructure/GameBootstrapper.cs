@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 public class GameBootstrapper : IStartable
 {
-    private string _startingSceneName;
+    private readonly string _startingSceneName;
 
     [Inject]
     public GameBootstrapper(StaticData staticData)
