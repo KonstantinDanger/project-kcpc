@@ -23,7 +23,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponent(_steamworks);
         builder.RegisterInstance(_staticData);
 
-        builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<Lobby>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<Lobby>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Singleton).AsSelf();
     }
 }

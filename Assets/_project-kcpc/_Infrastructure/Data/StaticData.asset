@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: StaticData
   m_EditorClassIdentifier: Assembly-CSharp::StaticData
   <PlayerPrefab>k__BackingField: {fileID: 2736406625678815066, guid: 9a1368ef26584734eb6235f5f6a857d2, type: 3}
-  <StartingSceneName>k__BackingField: Gym
+  <StartingSceneName>k__BackingField: MainMenuScene

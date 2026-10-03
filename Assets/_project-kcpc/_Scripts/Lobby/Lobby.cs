@@ -60,7 +60,7 @@ namespace ProjectKCPC.Scripts.Lobby
             Application.Quit();
         }
 
-        public void CreateLobby(ELobbyType lobbyType, int maxPlayersAmount = 4)
+        public void Create(ELobbyType lobbyType, int maxPlayersAmount = 4)
         {
             //if (IsMatchActive())
             //    return;
@@ -183,7 +183,7 @@ namespace ProjectKCPC.Scripts.Lobby
             
             Steamworks.StartConnection(false);
 
-            OnLobbyEnter.Invoke(callback);
+            //OnLobbyEnter?.Invoke(callback);
 
             IsCreated = true;
 

@@ -176,6 +176,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 996e8847b69f0bc4d9747a4281cc07ef, type: 3}
+--- !u!114 &3150800545323624803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2345855533609248913, guid: 996e8847b69f0bc4d9747a4281cc07ef, type: 3}
+  m_PrefabInstance: {fileID: 3150800545323624800}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28b19962fe839804180bd02ce1a545f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishySteamworks.FishySteamworks
+--- !u!114 &3150800545323624805 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1046716983718458287, guid: 996e8847b69f0bc4d9747a4281cc07ef, type: 3}
+  m_PrefabInstance: {fileID: 3150800545323624800}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c95dfde7d73b54dbbdc23155d35d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Managing.NetworkManager
 --- !u!1001 &4566748970831231776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,6 +206,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3380886116943918681, guid: e73458c9c57c1994dac0d47e46511aae, type: 3}
+      propertyPath: _netManager
+      value: 
+      objectReference: {fileID: 3150800545323624805}
+    - target: {fileID: 3380886116943918681, guid: e73458c9c57c1994dac0d47e46511aae, type: 3}
+      propertyPath: _steamworks
+      value: 
+      objectReference: {fileID: 3150800545323624803}
     - target: {fileID: 3835141746247568165, guid: e73458c9c57c1994dac0d47e46511aae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
