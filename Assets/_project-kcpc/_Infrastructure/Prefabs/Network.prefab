@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1777038013962619188}
   - component: {fileID: 8145395686479914015}
   - component: {fileID: 2345855533609248913}
+  - component: {fileID: 810307254197633308}
+  - component: {fileID: -2957944314057225278}
   m_Layer: 0
   m_Name: Network
   m_TagString: Untagged
@@ -110,5 +112,36 @@ MonoBehaviour:
   _serverBindAddress: 
   _port: 7770
   _maximumClients: 9001
-  _peerToPeer: 0
+  _peerToPeer: 1
   _clientAddress: 
+--- !u!114 &810307254197633308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574385666959527829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211a9f6ec51ddc14f908f5acc0cd0423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Component.Spawning.PlayerSpawner
+  _playerPrefab: {fileID: 2968603114868780521, guid: 9a1368ef26584734eb6235f5f6a857d2, type: 3}
+  _addToDefaultScene: 1
+  Spawns: []
+--- !u!114 &-2957944314057225278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574385666959527829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15895a51081447d46bda466e7e830c08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Managing.Scened.SceneManager
+  _sceneProcessor: {fileID: 0}
+  _lightProbeUpdating: 0
+  _moveClientObjects: 1
+  _setActiveScene: 1

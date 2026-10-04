@@ -1,4 +1,5 @@
 using FishNet.Managing;
+using ProjectKCPC.Scripts;
 using ProjectKCPC.Scripts.Lobby;
 using UnityEngine;
 using VContainer;
@@ -22,6 +23,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponent(_netManager);
         builder.RegisterComponent(_steamworks);
         builder.RegisterInstance(_staticData);
+        builder.RegisterInstance(new SceneLoader());
 
         builder.RegisterEntryPoint<Lobby>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Singleton).AsSelf();

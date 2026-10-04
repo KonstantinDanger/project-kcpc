@@ -1,9 +1,10 @@
+using FishNet;
 using FishNet.Managing;
-using LiteNetLib;
+using FishNet.Managing.Server;
+using FishNet.Transporting;
 using Steamworks;
 using System;
 using System.Collections;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -22,9 +23,9 @@ namespace ProjectKCPC.Scripts.Lobby
         private FishySteamworks.FishySteamworks Steamworks { get; }
         private NetworkManager NetManager { get; }
 
-        protected Callback<LobbyCreated_t> LobbyCreated;
-        protected Callback<GameLobbyJoinRequested_t> JoinRequested;
-        protected Callback<LobbyEnter_t> LobbyEntered;
+        private Callback<LobbyCreated_t> LobbyCreated;
+        private Callback<GameLobbyJoinRequested_t> JoinRequested;
+        private Callback<LobbyEnter_t> LobbyEntered;
 
         public event Action<LobbyCreated_t> OnLobbyCreated;
         public event Action OnLobbyDisband;
@@ -60,13 +61,42 @@ namespace ProjectKCPC.Scripts.Lobby
             Application.Quit();
         }
 
-        public void Create(ELobbyType lobbyType, int maxPlayersAmount = 4)
+        public IEnumerator Create(ELobbyType lobbyType, int maxPlayersAmount = 4)
         {
+            if (IsCreated)
+                yield break;
+
+            bool succeed = false;
+            bool failed = false;
+
+            MaxPlayers = maxPlayersAmount;
+
+            SteamMatchmaking.CreateLobby(lobbyType, MaxPlayers);
+
+            yield return new WaitUntil(() => IsCreated);
+
+            NetManager.ServerManager.OnServerConnectionState += HandleConnectionResult;
+
+            Steamworks.SetClientAddress(SteamUser.GetSteamID().ToString());
+
+            NetManager.ServerManager.StartConnection();
+            NetManager.ClientManager.StartConnection();
+
+            while (!succeed && !failed)
+                yield return null;
+
+            NetManager.ServerManager.OnServerConnectionState -= HandleConnectionResult;
+
+            void HandleConnectionResult(ServerConnectionStateArgs args)
+            {
+                if (args.ConnectionState == LocalConnectionState.Stopped)
+                    failed = true;
+                else if (args.ConnectionState == LocalConnectionState.Started)
+                    succeed = true;
+            }
+
             //if (IsMatchActive())
             //    return;
-
-            SteamMatchmaking.CreateLobby(lobbyType, maxPlayersAmount);
-            MaxPlayers = maxPlayersAmount;
         }
 
         public void Disband()
@@ -146,12 +176,9 @@ namespace ProjectKCPC.Scripts.Lobby
                 "name",
                 SteamFriends.GetPersonaName().ToString() + "'s Lobby");
 
-            Steamworks.SetClientAddress(pchValue);
-            Steamworks.StartConnection(true);
-
             IsCreated = true;
 
-            OnLobbyCreated?.Invoke(callback);
+            //OnLobbyCreated?.Invoke(callback);
         }
 
         private void HandleJoinRequest(GameLobbyJoinRequested_t callback)
@@ -164,7 +191,7 @@ namespace ProjectKCPC.Scripts.Lobby
 
             SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
 
-            OnJoinRequested.Invoke(callback);
+            //OnJoinRequested.Invoke(callback);
         }
 
         private void HandleLobbyEnter(LobbyEnter_t callback)
@@ -172,16 +199,19 @@ namespace ProjectKCPC.Scripts.Lobby
             LobbyId = new CSteamID(callback.m_ulSteamIDLobby);
             LobbyName = SteamMatchmaking.GetLobbyData(LobbyId, "name");
 
-            //if (IsHost())
-            //{
-            //    OnLobbyEnter.Invoke(callback);
+            if (IsHost())
+            {
 
-            //    return;
-            //}
+                UnityEngine.Debug.Log("is host " );
+                //OnLobbyEnter.Invoke(callback);
 
-            Steamworks.SetClientAddress(SteamMatchmaking.GetLobbyData(LobbyId, HostAddressKey));
-            
-            Steamworks.StartConnection(false);
+                return;
+            }
+
+            string address = SteamMatchmaking.GetLobbyData(LobbyId, HostAddressKey);
+            Steamworks.SetClientAddress(address);
+
+            NetManager.ClientManager.StartConnection();
 
             //OnLobbyEnter?.Invoke(callback);
 
@@ -221,7 +251,7 @@ namespace ProjectKCPC.Scripts.Lobby
         //}
 
         private bool IsHost()
-            => NetManager.IsHostStarted;
+            => LobbyOwnerID == SteamUser.GetSteamID();
 
         private void ResetLobbyData()
         {

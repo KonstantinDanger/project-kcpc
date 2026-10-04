@@ -1,0 +1,45 @@
+{
+    "name": "Heathen.Steamworks.FishNet",
+    "rootNamespace": "Heathen.SteamworksIntegration.FishNetTransport",
+    "references": [
+        "com.rlabrecque.steamworks.net",
+        "Heathen.Foundations.Steamworks",
+        "Heathen.GameFramework",
+        "FishNet.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "LinuxStandalone64",
+        "macOSStandalone",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "FOUNDATION",
+        "STEAM_INSTALLED",
+        "FISHNET_INSTALLED"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.rlabrecque.steamworks.net",
+            "expression": "",
+            "define": "STEAM_INSTALLED"
+        },
+        {
+            "name": "com.heathen.steamworksfoundation",
+            "expression": "",
+            "define": "FOUNDATION"
+        },
+        {
+            "name": "com.firstgeargames.fishnet",
+            "expression": "",
+            "define": "FISHNET_INSTALLED"
+        }
+    ],
+    "noEngineReferences": false
+}

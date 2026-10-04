@@ -1,5 +1,7 @@
+using ProjectKCPC.Scripts;
 using ProjectKCPC.Scripts.Lobby;
 using Steamworks;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -12,11 +14,15 @@ namespace ProjectKCPC
         [SerializeField] private ELobbyType _lobbyType = ELobbyType.k_ELobbyTypePublic;
 
         private Lobby _lobby;
+        private StaticData _staticData;
+        private SceneLoader _sceneLoader;
 
         [Inject]
-        private void Construct(Lobby lobby)
+        private void Construct(Lobby lobby, StaticData staticData, SceneLoader sceneLoader)
         {
             _lobby = lobby;
+            _staticData = staticData;
+            _sceneLoader = sceneLoader;
         }
 
         private void OnEnable()
@@ -31,7 +37,15 @@ namespace ProjectKCPC
 
         private void HandleStart()
         {
-            _lobby.Create(_lobbyType);
+            StartCoroutine(HandleStartRoutine());
+        }
+
+        private IEnumerator HandleStartRoutine()
+        {
+            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; 
+            yield return _lobby.Create(_lobbyType);
+            _sceneLoader.Load(_staticData.NextSceneFromMenu);
+            _sceneLoader.Unload(currentScene);
         }
     }
 }
