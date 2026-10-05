@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
@@ -14,9 +15,19 @@ public class GameBootstrapper : IStartable
 
     public void Start()
     {
-        if (SceneManager.GetActiveScene().name == "BootScene")
+        // Не переключаем сцену, если мы запустили не BootScene или MainMenuScene
+        // Это позволяет запускать любую сцену (например Gym) напрямую в редакторе.
+        string currentScene = SceneManager.GetActiveScene().name;
+        
+        // ВРЕМЕННАЯ ПРОВЕРКА: загружаем только если мы действительно в BootScene
+        if (currentScene == "BootScene")
         {
+            Debug.Log($"[GameBootstrapper] Мы в BootScene, загружаем: {_startingSceneName}");
             SceneManager.LoadScene(_startingSceneName);
+        }
+        else
+        {
+            Debug.Log($"[GameBootstrapper] Мы в сцене: {currentScene}. Пропускаем загрузку.");
         }
     }
 }
