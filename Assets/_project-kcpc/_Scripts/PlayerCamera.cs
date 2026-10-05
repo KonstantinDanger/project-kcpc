@@ -53,6 +53,7 @@ namespace ProjectKCPC.Scripts
 
         }
 
+        [ContextMenu("Hide cursor")]
         public void HideCursor()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -60,6 +61,7 @@ namespace ProjectKCPC.Scripts
             _isLocked = false;
         }
 
+        [ContextMenu("Show cursor")]
         public void ShowCursor()
         {
             Cursor.lockState = CursorLockMode.None;

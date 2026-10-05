@@ -5,9 +5,9 @@ using UnityEngine;
 public class StaticData : ScriptableObject
 {
     [field: SerializeField] public Player PlayerPrefab { get; private set; }
-    [field: SerializeField] public string StartingSceneName { get; private set; } = "GameplayScene";
-    [field: SerializeField] public string GameSceneName { get; private set; } = "GameplayScene";
-    [field: SerializeField] public string NextSceneFromMenu { get; private set; } = "LobbyScene";
+    [field: SerializeField] public string MainMenuScene { get; private set; } = "MainMenuScene";
+    [field: SerializeField] public string GameScene { get; private set; } = "GameplayScene";
+    [field: SerializeField] public string LobbyScene { get; private set; } = "LobbyScene";
 
     public static class Constants
     {

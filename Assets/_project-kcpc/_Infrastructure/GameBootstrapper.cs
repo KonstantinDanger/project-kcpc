@@ -9,7 +9,7 @@ public class GameBootstrapper : IStartable
     [Inject]
     public GameBootstrapper(StaticData staticData)
     {
-        _startingSceneName = staticData.StartingSceneName;
+        _startingSceneName = staticData.MainMenuScene;
     }
 
     public void Start()

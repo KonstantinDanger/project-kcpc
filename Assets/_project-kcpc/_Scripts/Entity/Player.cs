@@ -1,12 +1,16 @@
 using FishNet.Object;
 using ProjectKCPC.Scripts.Config;
-using System;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.Entity
 {
     public class Player : NetworkBehaviour
     {
+        //private readonly SyncVar<ulong> _steamID;
+        //private readonly SyncVar<string> _steamName;
+        //public ulong SteamID => _steamID.Value;
+        //public string SteamName => _steamName.Value;
+
         [SerializeField] private CameraConfig _cameraConfig;
         [SerializeField] private PlayerCamera _playerCamera;
         [SerializeField] private float _movementSpeed;

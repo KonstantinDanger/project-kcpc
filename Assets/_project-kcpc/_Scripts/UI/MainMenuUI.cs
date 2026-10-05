@@ -44,7 +44,7 @@ namespace ProjectKCPC
         {
             string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; 
             yield return _lobby.Create(_lobbyType);
-            _sceneLoader.Load(_staticData.NextSceneFromMenu);
+            _sceneLoader.Load(_staticData.LobbyScene);
             _sceneLoader.Unload(currentScene);
         }
     }

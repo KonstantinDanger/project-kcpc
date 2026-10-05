@@ -2,145 +2,145 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using VContainer;
+using Steamworks;
+using FishNet;
 
 namespace ProjectKCPC.Scripts.UI
 {
-    public class LobbyView : MonoBehaviour
+    public class LobbyView : UIView
     {
-        //    [SerializeField] private TextMeshProUGUI _lobbyNameText;
+        [SerializeField] private TextMeshProUGUI _lobbyNameText;
+        [SerializeField] private ELobbyType _lobbyType;
 
-        //    [Header("Buttons")]
-        //    [SerializeField] private Button _returnToGameButton;
-        //    [SerializeField] private Button _quitGameButton;
-        //    [SerializeField] private Button _startGameButton;
-        //    [SerializeField] private Button _createLobbyButton;
-        //    [SerializeField] private Button _inviteButton;
-        //    [SerializeField] private Button _disbandButton;
-        //    [SerializeField] private Button _leaveButton;
+        [Header("Buttons")]
+        [SerializeField] private Button _returnToGameButton;
+        [SerializeField] private Button _quitGameButton;
+        [SerializeField] private Button _startGameButton;
+        [SerializeField] private Button _inviteButton;
+        [SerializeField] private Button _disbandButton;
+        [SerializeField] private Button _leaveButton;
 
-        //    private Lobby.Lobby _lobby;
+        private Lobby.Lobby _lobby;
+        private SceneLoader _sceneLoader;
+        private StaticData _staticData;
 
-        //    [Inject]
-        //    public void Construct(Lobby.Lobby lobby)
-        //    {
-        //        _lobby = lobby;
+        [Inject]
+        public void Construct(Lobby.Lobby lobby, SceneLoader sceneLoader, StaticData staticData)
+        {
+            _lobby = lobby;
+            _sceneLoader = sceneLoader;
+            _staticData = staticData;
 
-        //        _lobby.OnLobbyCreated += HandleLobbyCreated;
-        //        _lobby.OnJoinRequested += HandleJoinRequest;
-        //        _lobby.OnLobbyEnter += HandleLobbyEntered;
+            //_lobby.OnJoinRequested += HandleJoinRequest;
+            _lobby.OnLobbyEnter += HandleLobbyEntered;
 
-        //        _quitGameButton.onClick.AddListener(HandleQuitGame);
+            _quitGameButton.onClick.AddListener(HandleQuitToMainMenu);
 
-        //        _startGameButton.onClick.AddListener(HandleStartGame);
-        //        _inviteButton.onClick.AddListener(HandleInvite);
-        //        _leaveButton.onClick.AddListener(HandleLeaveLobby);
-        //        _disbandButton.onClick.AddListener(HandleDisbandLobby);
+            _startGameButton.onClick.AddListener(HandleStartGame);
+            _inviteButton.onClick.AddListener(HandleInvite);
+            _leaveButton.onClick.AddListener(HandleLeaveLobby);
+            _disbandButton.onClick.AddListener(HandleDisbandLobby);
 
-        //        _createLobbyButton.onClick.AddListener(HandleCreateLobby);
+            HandleUIChange();
+        }
 
-        //        HandleUIChange();
-        //    }
+        public void OnDestroy()
+        {
+            //_lobby.OnJoinRequested -= HandleJoinRequest;
+            _lobby.OnLobbyEnter -= HandleLobbyEntered;
 
-        //    private void OnEnable()
-        //    {
-        //        if (_lobby == null)
-        //            return;
+            _quitGameButton.onClick.RemoveListener(HandleQuitToMainMenu);
 
-        //        HandleUIChange();
-        //    }
+            _startGameButton.onClick.RemoveListener(HandleStartGame);
+            _inviteButton.onClick.RemoveListener(HandleInvite);
+            _leaveButton.onClick.RemoveListener(HandleLeaveLobby);
+            _disbandButton.onClick.RemoveListener(HandleDisbandLobby);
+        }
 
-        //    public void OnDestroy()
-        //    {
-        //        _lobby.OnLobbyCreated -= HandleLobbyCreated;
-        //        _lobby.OnJoinRequested -= HandleJoinRequest;
-        //        _lobby.OnLobbyEnter -= HandleLobbyEntered;
+        protected override void OnEnable()
+        {
+            if (_lobby == null)
+                return;
 
-        //        _quitGameButton.onClick.RemoveListener(HandleQuitGame);
+            HandleUIChange();
 
-        //        _startGameButton.onClick.RemoveListener(HandleStartGame);
-        //        _inviteButton.onClick.RemoveListener(HandleInvite);
-        //        _leaveButton.onClick.RemoveListener(HandleLeaveLobby);
-        //        _disbandButton.onClick.RemoveListener(HandleDisbandLobby);
+            //base.OnEnable();
+        }
 
-        //        _createLobbyButton.onClick.RemoveListener(HandleCreateLobby);
-        //    }
+        private void HandleQuitToMainMenu()
+        {
+            if (IsLobbyOwner())
+                _lobby.Disband();
 
-        //    private void HandleQuitGame()
-        //        => _lobby.QuitGame();
+            //_lobby.QuitGame();
+            HandleLeaveLobby();
+        }
 
-        //    private void HandleStartGame()
-        //    {
-        //        //Events.InvokeStartGame();
-        //        HandleUIChange();
-        //    }
+        private void HandleStartGame()
+        {
+            _sceneLoader.Load(_staticData.GameScene);
 
-        //    private void HandleInvite()
-        //        => _lobby.Invite();
+            //Events.InvokeStartGame();
+            //HandleUIChange();
+        }
 
-        //    private void HandleDisbandLobby()
-        //    {
-        //        _lobby.Disband();
-        //        HandleUIChange();
-        //    }
+        private void HandleInvite()
+            => _lobby.Invite();
 
-        //    private void HandleLeaveLobby()
-        //    {
-        //        _lobby.Leave();
-        //        HandleUIChange();
-        //    }
+        private void HandleDisbandLobby()
+        {
+            _lobby.Disband();
+            _lobby.Create(_lobbyType);
+            HandleUIChange();
+        }
 
-        //    private void HandleCreateLobby()
-        //    {
-        //        _lobby.CreateLobby(_lobbyType);
-        //        HandleUIChange();
-        //    }
+        private void HandleLeaveLobby()
+        {
+            _lobby.Leave();
+            _sceneLoader.Load(_staticData.MainMenuScene);
+            HandleUIChange();
+        }
 
-        //    private void HandleLobbyCreated(LobbyCreated_t callback)
-        //        => HandleUIChange();
+        private void HandleJoinRequest(GameLobbyJoinRequested_t callback)
+            => HandleUIChange();
 
-        //    private void HandleJoinRequest(GameLobbyJoinRequested_t callback)
-        //        => HandleUIChange();
+        private void HandleLobbyEntered(LobbyEnter_t callback)
+            => HandleUIChange();
 
-        //    private void HandleLobbyEntered(LobbyEnter_t callback)
-        //        => HandleUIChange();
+        private void HandleUIChange()
+        {
+            _lobbyNameText.text = string.IsNullOrEmpty(_lobby.LobbyName) ? "Offline" : _lobby.LobbyName;
 
-        //    private void HandleUIChange()
-        //    {
+            bool playersConnected = InstanceFinder.ServerManager.Clients.Count == _lobby.MaxPlayers;
 
-        //        //_lobbyNameText.text = string.IsNullOrEmpty(_lobby.LobbyName) ? "Offline" : _lobby.LobbyName;
+            SetActive(_returnToGameButton, true);
 
-        //        ////bool playersConnected = NetworkServer.connections.Count == _lobby.MaxPlayers;
+            SetActive(_quitGameButton, !IsMissionGoing());
 
-        //        //SetActive(_returnToGameButton, true);
+            SetActive(_startGameButton, IsLobbyOwner() && _lobby.IsCreated && !IsMissionGoing());
 
-        //        //SetActive(_quitGameButton, !IsMissionGoing());
+            if (_startGameButton.gameObject.activeInHierarchy)
+                _startGameButton.enabled = playersConnected;
 
-        //        //SetActive(_startGameButton, IsLobbyOwner() && _lobby.IsCreated && !IsMissionGoing());
+            SetActive(_inviteButton, _lobby.IsCreated && IsLobbyOwner() && !playersConnected && !IsMissionGoing());
 
-        //        ////if (_startGameButton.gameObject.activeInHierarchy)
-        //        ////    _startGameButton.enabled = playersConnected;
+            SetActive(_disbandButton, _lobby.IsCreated && IsLobbyOwner() && !IsMissionGoing());
 
-        //        //SetActive(_createLobbyButton, !_lobby.IsCreated);
+            SetActive(_leaveButton, _lobby.IsCreated && (IsLobbyOwner() && IsMissionGoing() || !IsLobbyOwner()));
+        }
 
-        //        //SetActive(_inviteButton, _lobby.IsCreated && IsLobbyOwner() && !playersConnected && !IsMissionGoing());
+        private void SetActive(Button btn, bool active)
+            => btn.gameObject.SetActive(active);
 
-        //        //SetActive(_disbandButton, _lobby.IsCreated && IsLobbyOwner() && !IsMissionGoing());
+        private bool IsLobbyOwner()
+        {
+            CSteamID ownerID = _lobby.LobbyOwnerID;
+            CSteamID localPlayerID = SteamUser.GetSteamID();
+            return ownerID == localPlayerID;
+        }
 
-        //        //SetActive(_leaveButton, _lobby.IsCreated && (IsLobbyOwner() && IsMissionGoing() || !IsLobbyOwner()));
-        //    }
-
-        //    private void SetActive(Button btn, bool active)
-        //        => btn.gameObject.SetActive(active);
-
-        //    //private bool IsLobbyOwner()
-        //    //{
-        //    //    CSteamID ownerID = _lobby.LobbyOwnerID;
-        //    //    CSteamID localPlayerID = SteamUser.GetSteamID();
-        //    //    return ownerID == localPlayerID;
-        //    //}
-
-        //    private bool IsMissionGoing()
-        //        => false;
+        private bool IsMissionGoing()
+            => false;
     }
 
 }

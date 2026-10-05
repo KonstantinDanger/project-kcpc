@@ -1,6 +1,4 @@
-using FishNet;
 using FishNet.Managing;
-using FishNet.Managing.Server;
 using FishNet.Transporting;
 using Steamworks;
 using System;
@@ -20,6 +18,7 @@ namespace ProjectKCPC.Scripts.Lobby
         public CSteamID LobbyOwnerID => SteamMatchmaking.GetLobbyOwner(LobbyId);
         public CSteamID LobbyId { get; private set; }
         public int MaxPlayers { get; private set; }
+
         private FishySteamworks.FishySteamworks Steamworks { get; }
         private NetworkManager NetManager { get; }
 
@@ -109,7 +108,7 @@ namespace ProjectKCPC.Scripts.Lobby
 
             SteamMatchmaking.LeaveLobby(LobbyId);
             ResetLobbyData();
-            Steamworks.StopConnection(true);
+            NetManager.ServerManager.StopConnection(true);
 
             //StartCoroutine(DisbandAfterServerStopRoutine());
         }
@@ -130,7 +129,7 @@ namespace ProjectKCPC.Scripts.Lobby
 
             SteamMatchmaking.LeaveLobby(LobbyId);
             ResetLobbyData();
-            Steamworks.StopConnection(false);
+            NetManager.ClientManager.StopConnection();
 
             //StartCoroutine(InvokeLeaveWhenClientDisconnect());
         }
@@ -201,9 +200,7 @@ namespace ProjectKCPC.Scripts.Lobby
 
             if (IsHost())
             {
-
-                UnityEngine.Debug.Log("is host " );
-                //OnLobbyEnter.Invoke(callback);
+                OnLobbyEnter?.Invoke(callback);
 
                 return;
             }

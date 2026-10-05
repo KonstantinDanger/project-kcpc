@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8698172116995780038}
   - component: {fileID: 7997815151358735609}
-  - component: {fileID: 2030575282207207970}
   m_Layer: 0
   m_Name: SpawnPoint_Player
   m_TagString: Untagged
@@ -45,19 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57a2223e0997cc419a50a459166872f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.SpawnPoint
---- !u!114 &2030575282207207970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6641788469345624371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 211a9f6ec51ddc14f908f5acc0cd0423, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Component.Spawning.PlayerSpawner
-  _playerPrefab: {fileID: 2968603114868780521, guid: 9a1368ef26584734eb6235f5f6a857d2, type: 3}
-  _addToDefaultScene: 1
-  Spawns:
-  - {fileID: 8698172116995780038}

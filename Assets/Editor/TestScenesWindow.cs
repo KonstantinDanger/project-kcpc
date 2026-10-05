@@ -1,5 +1,7 @@
 #if UNITY_EDITOR
 
+using FishNet;
+using ProjectKCPC.Scripts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +14,7 @@ namespace ProjectKCPC.Assets.Editor
     public class TestScenesWindow : EditorWindow
     {
         private const string FolderPrefKey = "TestScenesWindow.Folder";
+        private readonly SceneLoader _sceneLoader = new();
 
         private string scenesFolder = "Assets";
 
@@ -258,7 +261,10 @@ namespace ProjectKCPC.Assets.Editor
             if (string.IsNullOrEmpty(scene.path))
                 return;
 
-            SceneManager.LoadScene(scene.path);
+            if (InstanceFinder.IsClientStarted)
+                _sceneLoader.Load(scene.path);
+            else
+                SceneManager.LoadScene(scene.path);
         }
 
         private void HandleHotkeys()
