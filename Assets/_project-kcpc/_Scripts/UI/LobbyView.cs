@@ -69,11 +69,11 @@ namespace ProjectKCPC.Scripts.UI
 
         private void HandleQuitToMainMenu()
         {
-            if (IsLobbyOwner())
-                _lobby.Disband();
-
-            //_lobby.QuitGame();
             HandleLeaveLobby();
+
+            //if (IsLobbyOwner())
+            //    _lobby.Disband();
+            //_lobby.QuitGame();
         }
 
         private void HandleStartGame()
@@ -96,8 +96,8 @@ namespace ProjectKCPC.Scripts.UI
 
         private void HandleLeaveLobby()
         {
-            _lobby.Leave();
             _sceneLoader.Load(_staticData.MainMenuScene);
+            _lobby.Leave();
             HandleUIChange();
         }
 
