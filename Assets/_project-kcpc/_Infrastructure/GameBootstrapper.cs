@@ -14,6 +14,9 @@ public class GameBootstrapper : IStartable
 
     public void Start()
     {
-        SceneManager.LoadScene(_startingSceneName);
+        if (SceneManager.GetActiveScene().name == "BootScene")
+        {
+            SceneManager.LoadScene(_startingSceneName);
+        }
     }
 }
