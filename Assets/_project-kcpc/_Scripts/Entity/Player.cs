@@ -1,4 +1,3 @@
-using FishNet.Connection;
 using FishNet.Object;
 using ProjectKCPC.Scripts.Config;
 using UnityEngine;
@@ -33,12 +32,18 @@ namespace ProjectKCPC.Scripts.Entity
             base.OnStartClient();
         }
 
-        public override void OnOwnershipClient(NetworkConnection prevOwner)
+        private void OnEnable()
         {
-            base.OnOwnershipClient(prevOwner);
-
             _input.Enable();
+
             _input.Player.Jump.performed += HandleJump;
+        }
+
+        private void OnDisable()
+        {
+            _input.Disable();
+         
+            _input.Player.Jump.performed -= HandleJump;
         }
 
         private void Update()
@@ -74,12 +79,6 @@ namespace ProjectKCPC.Scripts.Entity
             if (!HasActionAuthority())
                 return;
 
-            ServerRpcHandleJump();
-        }
-
-        [ServerRpc(RequireOwnership =false)]
-        private void ServerRpcHandleJump()
-        {
             _movement.Jump(_movementConfig.JumpHeight);
         }
 
