@@ -1,5 +1,6 @@
 using FishNet.Object;
 using ProjectKCPC.Scripts.Config;
+using System;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.Entity
@@ -12,10 +13,10 @@ namespace ProjectKCPC.Scripts.Entity
         //public string SteamName => _steamName.Value;
 
         [SerializeField] private CameraConfig _cameraConfig;
+        [SerializeField] private MovementConfig _movementConfig;
         [SerializeField] private PlayerCamera _playerCamera;
-        [SerializeField] private float _movementSpeed;
-        [SerializeField] private Transform _directionPivot;
         [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private Transform _directionPivot;
 
         private PlayerInput _input;
         private Vector3 _movementInputDirection;
@@ -35,11 +36,15 @@ namespace ProjectKCPC.Scripts.Entity
         private void OnEnable()
         {
             _input.Enable();
+
+            _input.Player.Jump.performed += HandleJump;
         }
 
         private void OnDisable()
         {
             _input.Disable();
+         
+            _input.Player.Jump.performed -= HandleJump;
         }
 
         private void Update()
@@ -66,6 +71,20 @@ namespace ProjectKCPC.Scripts.Entity
             Move();
         }
 
+        private void HandleJump(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            if (!HasActionAuthority())
+                return;
+            _movement.Jump(_movementConfig.JumpHeight);
+
+            //ServerRpcHandleJump();
+        }
+
+        [ServerRpc]
+        private void ServerRpcHandleJump()
+        {
+        }
+
         private void Rotate()
         {
             Vector2 input = _input.Player.Look.ReadValue<Vector2>();
@@ -75,7 +94,7 @@ namespace ProjectKCPC.Scripts.Entity
 
         private void Move()
         {
-            _movement.Move(_movementInputDirection, _movementSpeed);
+            _movement.Move(_movementInputDirection, _movementConfig.MovementSpeed);
         }
 
         private bool HasActionAuthority()

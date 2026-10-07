@@ -91,10 +91,10 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2968603114868780521}
   _networkObjectCache: {fileID: 2968603114868780521}
   _cameraConfig: {fileID: 11400000, guid: 1a59861a71bc81f42905f92b3ccec335, type: 2}
+  _movementConfig: {fileID: 11400000, guid: f42c84e72e0c44244870f6c11340ba43, type: 2}
   _playerCamera: {fileID: 3514027252367014030}
-  _movementSpeed: 80
-  _directionPivot: {fileID: 5116723977066332392}
   _movement: {fileID: 354834340746798359}
+  _directionPivot: {fileID: 5116723977066332392}
 --- !u!114 &354834340746798359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.PlayerMovement
   _rigidbody: {fileID: 1880581860630229403}
   _moveForceMode: 2
+  _jumpForceMode: 2
 --- !u!54 &1880581860630229403
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -297,7 +298,7 @@ MonoBehaviour:
   <AssetPathHash>k__BackingField: 12644433466531330356
   SceneId: 0
   SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0, y: 1, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
     IsValid: 1
@@ -320,7 +321,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584104735243251565
+  _initializedTimestamp: -8584102282145138224
 --- !u!114 &3514027252367014030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +423,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3257291363436285365}
+  - component: {fileID: 6430549230035390416}
+  - component: {fileID: 4279922777003559043}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -445,6 +448,33 @@ Transform:
   - {fileID: 5412426849383316272}
   m_Father: {fileID: 4789101928730344091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6430549230035390416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4809011327877185622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf2b9c6edd009844a9b4723c68d87043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.SimpleRotatable
+--- !u!114 &4279922777003559043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4809011327877185622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a06eda95d320049bf90f22e5613852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.PlayerVisuals
+  _modelRotation: {fileID: 6430549230035390416}
+  _movement: {fileID: 354834340746798359}
+  _rotationSpeed: 6
 --- !u!1 &8170292294821269663
 GameObject:
   m_ObjectHideFlags: 0

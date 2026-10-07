@@ -7,6 +7,7 @@ namespace ProjectKCPC.Scripts
     {
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private ForceMode _moveForceMode;
+        [SerializeField] private ForceMode _jumpForceMode;
 
         public Vector3 Velocity { get; private set; }
 
@@ -17,6 +18,11 @@ namespace ProjectKCPC.Scripts
             _rigidbody.AddForce(Velocity, _moveForceMode);
 
             LimitVelocity(speed);
+        }
+
+        public void Jump(float height)
+        {
+            _rigidbody.AddForce(transform.up * height, _jumpForceMode);
         }
 
         private void LimitVelocity(float speed)

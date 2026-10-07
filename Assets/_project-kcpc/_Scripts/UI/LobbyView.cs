@@ -142,5 +142,4 @@ namespace ProjectKCPC.Scripts.UI
         private bool IsMissionGoing()
             => false;
     }
-
 }
