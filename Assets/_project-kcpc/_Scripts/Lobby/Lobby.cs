@@ -1,8 +1,10 @@
+using FishNet.Connection;
 using FishNet.Managing;
 using FishNet.Transporting;
 using Steamworks;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -109,10 +111,20 @@ namespace ProjectKCPC.Scripts.Lobby
 
             //if (!NetworkServer.active)
             //    return;
-           
+
+            if (!IsHost() || !IsCreated)
+                yield break;
 
             SteamMatchmaking.LeaveLobby(LobbyId);
             ResetLobbyData();
+
+            foreach (NetworkConnection connection in NetManager.ServerManager.Clients.Values.ToList())
+            {
+                if (connection.IsLocalClient)
+                    continue;
+
+                connection.Disconnect(true);
+            }
 
             SteamMatchmaking.CreateLobby(_cachedLobbyType, MaxPlayers);
             yield return new WaitUntil(() => IsCreated);

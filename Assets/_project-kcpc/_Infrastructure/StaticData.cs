@@ -11,6 +11,6 @@ public class StaticData : ScriptableObject
 
     public static class Constants
     {
-        public static string EmptyTag { get; internal set; } = "";
+        public static string EmptyTag { get; private set; } = " ";
     }
 }
