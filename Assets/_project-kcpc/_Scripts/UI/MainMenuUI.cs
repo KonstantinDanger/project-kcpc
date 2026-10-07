@@ -1,5 +1,6 @@
 using ProjectKCPC.Scripts;
 using ProjectKCPC.Scripts.Lobby;
+using ProjectKCPC.Scripts.UI;
 using Steamworks;
 using System.Collections;
 using UnityEngine;
@@ -8,7 +9,7 @@ using VContainer;
 
 namespace ProjectKCPC
 {
-    public class MainMenuUI : MonoBehaviour
+    public class MainMenuUI : UI
     {
         [SerializeField] private Button _startButton;
         [SerializeField] private ELobbyType _lobbyType = ELobbyType.k_ELobbyTypePublic;
@@ -28,6 +29,7 @@ namespace ProjectKCPC
         private void OnEnable()
         {
             _startButton.onClick.AddListener(HandleStart);
+            _startButton.enabled = true;
         }
 
         private void OnDisable()
@@ -42,7 +44,8 @@ namespace ProjectKCPC
 
         private IEnumerator HandleStartRoutine()
         {
-            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; 
+            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            _startButton.enabled = false;
             yield return _lobby.Create(_lobbyType);
             _sceneLoader.Load(_staticData.LobbyScene);
             _sceneLoader.Unload(currentScene);

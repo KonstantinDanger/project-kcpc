@@ -1,6 +1,5 @@
 using FishNet.Object;
 using ProjectKCPC.Scripts.Config;
-using System;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.Entity
@@ -53,7 +52,11 @@ namespace ProjectKCPC.Scripts.Entity
                 return;
 
             Rotate();
+            CacheMovementDirection();
+        }
 
+        private void CacheMovementDirection()
+        {
             Vector2 moveInput = _input.Player.Move.ReadValue<Vector2>();
 
             Vector3 projectedForward = Vector3.ProjectOnPlane(_directionPivot.forward, transform.up).normalized;
@@ -75,14 +78,15 @@ namespace ProjectKCPC.Scripts.Entity
         {
             if (!HasActionAuthority())
                 return;
-            _movement.Jump(_movementConfig.JumpHeight);
 
-            //ServerRpcHandleJump();
+
+            ServerRpcHandleJump();
         }
 
         [ServerRpc]
         private void ServerRpcHandleJump()
         {
+            _movement.Jump(_movementConfig.JumpHeight);
         }
 
         private void Rotate()

@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using VContainer;
 using Steamworks;
 using FishNet;
+using System;
+using System.Collections;
 
 namespace ProjectKCPC.Scripts.UI
 {
@@ -32,6 +34,7 @@ namespace ProjectKCPC.Scripts.UI
             _staticData = staticData;
 
             //_lobby.OnJoinRequested += HandleJoinRequest;
+            _returnToGameButton.onClick.AddListener(Close);
             _lobby.OnLobbyEnter += HandleLobbyEntered;
 
             _quitGameButton.onClick.AddListener(HandleQuitToMainMenu);
@@ -47,6 +50,7 @@ namespace ProjectKCPC.Scripts.UI
         public void OnDestroy()
         {
             //_lobby.OnJoinRequested -= HandleJoinRequest;
+            _returnToGameButton.onClick.RemoveListener(Close);
             _lobby.OnLobbyEnter -= HandleLobbyEntered;
 
             _quitGameButton.onClick.RemoveListener(HandleQuitToMainMenu);
@@ -64,7 +68,7 @@ namespace ProjectKCPC.Scripts.UI
 
             HandleUIChange();
 
-            //base.OnEnable();
+            base.OnEnable();
         }
 
         private void HandleQuitToMainMenu()
@@ -89,9 +93,16 @@ namespace ProjectKCPC.Scripts.UI
 
         private void HandleDisbandLobby()
         {
-            _lobby.Disband();
-            _lobby.Create(_lobbyType);
+            StartCoroutine(DisbandLobbyRoutine());
+        }
+
+        private IEnumerator DisbandLobbyRoutine()
+        {
+            _disbandButton.enabled = false;
+            yield return _lobby.Disband();
+            //_lobby.Create(_lobbyType);
             HandleUIChange();
+            _disbandButton.enabled = true;
         }
 
         private void HandleLeaveLobby()

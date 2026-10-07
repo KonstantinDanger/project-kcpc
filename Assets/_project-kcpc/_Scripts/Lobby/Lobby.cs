@@ -32,6 +32,8 @@ namespace ProjectKCPC.Scripts.Lobby
         public event Action<LobbyEnter_t> OnLobbyEnter;
         public event Action OnLobbyLeave;
 
+        private ELobbyType _cachedLobbyType;
+
         [Inject]
         public Lobby(NetworkManager netManager, FishySteamworks.FishySteamworks steamworks)
         {
@@ -49,16 +51,16 @@ namespace ProjectKCPC.Scripts.Lobby
             LobbyEntered = Callback<LobbyEnter_t>.Create(HandleLobbyEnter);
         }
 
-        public void QuitGame()
-        {
-            //if (IsMatchActive())
-            //    return;
+        //public void QuitGame()
+        //{
+        //    //if (IsMatchActive())
+        //    //    return;
 
-            if (IsCreated)
-                Leave();
+        //    if (IsCreated)
+        //        Leave();
 
-            Application.Quit();
-        }
+        //    Application.Quit();
+        //}
 
         public IEnumerator Create(ELobbyType lobbyType, int maxPlayersAmount = 4)
         {
@@ -94,21 +96,26 @@ namespace ProjectKCPC.Scripts.Lobby
                     succeed = true;
             }
 
+            _cachedLobbyType = lobbyType;
+
             //if (IsMatchActive())
             //    return;
         }
 
-        public void Disband()
+        public IEnumerator Disband()
         {
             //if (IsMatchActive())
             //    return;
 
             //if (!NetworkServer.active)
             //    return;
+           
 
             SteamMatchmaking.LeaveLobby(LobbyId);
             ResetLobbyData();
-            NetManager.ServerManager.StopConnection(true);
+
+            SteamMatchmaking.CreateLobby(_cachedLobbyType, MaxPlayers);
+            yield return new WaitUntil(() => IsCreated);
 
             //StartCoroutine(DisbandAfterServerStopRoutine());
         }
@@ -123,7 +130,9 @@ namespace ProjectKCPC.Scripts.Lobby
 
             if (IsHost())
             {
-                Disband();
+                SteamMatchmaking.LeaveLobby(LobbyId);
+                ResetLobbyData();
+                NetManager.ServerManager.StopConnection(true);
                 return;
             }
 
