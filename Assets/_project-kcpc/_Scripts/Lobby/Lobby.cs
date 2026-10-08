@@ -11,7 +11,7 @@ using VContainer.Unity;
 
 namespace ProjectKCPC.Scripts.Lobby
 {
-    public class Lobby : IStartable
+    public class Lobby : IStartable, IDisposable
     {
         private const string HostAddressKey = "HostAddress";
 
@@ -23,6 +23,8 @@ namespace ProjectKCPC.Scripts.Lobby
 
         private FishySteamworks.FishySteamworks Steamworks { get; }
         private NetworkManager NetManager { get; }
+        private SceneLoader SceneLoader { get; }
+        private StaticData StaticData { get; }
 
         private Callback<LobbyCreated_t> LobbyCreated;
         private Callback<GameLobbyJoinRequested_t> JoinRequested;
@@ -37,10 +39,12 @@ namespace ProjectKCPC.Scripts.Lobby
         private ELobbyType _cachedLobbyType;
 
         [Inject]
-        public Lobby(NetworkManager netManager, FishySteamworks.FishySteamworks steamworks)
+        public Lobby(NetworkManager netManager, FishySteamworks.FishySteamworks steamworks, SceneLoader sceneLoader, StaticData staticData)
         {
             NetManager = netManager;
             Steamworks = steamworks;
+            SceneLoader = sceneLoader;
+            StaticData = staticData;
         }
 
         public void Start()
@@ -51,6 +55,13 @@ namespace ProjectKCPC.Scripts.Lobby
             LobbyCreated = Callback<LobbyCreated_t>.Create(HandleLobbyCreated);
             JoinRequested = Callback<GameLobbyJoinRequested_t>.Create(HandleJoinRequest);
             LobbyEntered = Callback<LobbyEnter_t>.Create(HandleLobbyEnter);
+
+            NetManager.ClientManager.OnClientConnectionState += HandleClientConnectionState;
+        }
+
+        public void Dispose()
+        {
+            NetManager.ClientManager.OnClientConnectionState -= HandleClientConnectionState;
         }
 
         //public void QuitGame()
@@ -123,7 +134,7 @@ namespace ProjectKCPC.Scripts.Lobby
                 if (connection.IsLocalClient)
                     continue;
 
-                connection.Disconnect(true);
+                connection.Disconnect(false);
             }
 
             SteamMatchmaking.CreateLobby(_cachedLobbyType, MaxPlayers);
@@ -176,6 +187,16 @@ namespace ProjectKCPC.Scripts.Lobby
             //    return;
 
             SteamFriends.ActivateGameOverlayInviteDialogConnectString(LobbyId.ToString());
+        }
+
+        private void HandleClientConnectionState(ClientConnectionStateArgs args)
+        {
+            if (args.ConnectionState == LocalConnectionState.Stopped)
+            {
+                SteamMatchmaking.LeaveLobby(LobbyId);
+                ResetLobbyData();
+                SceneLoader.Load(StaticData.MainMenuScene);
+            }
         }
 
         private void HandleLobbyCreated(LobbyCreated_t callback)

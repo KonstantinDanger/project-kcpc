@@ -28,7 +28,7 @@ namespace ProjectKCPC.Scripts.Entity
         public override void OnStartClient()
         {
             _playerCamera.Initialize(HasActionAuthority(), _cameraConfig);
-
+            
             base.OnStartClient();
         }
 
