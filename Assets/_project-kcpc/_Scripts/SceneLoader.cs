@@ -1,16 +1,12 @@
 ﻿using FishNet;
 using FishNet.Connection;
 using FishNet.Managing.Scened;
-using FishNet.Object;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjectKCPC.Scripts
 {
     public class SceneLoader
     {
-        public void Load(string sceneName, IEnumerable<NetworkConnection> connections = null)
+        public void Load(string sceneName, NetworkConnection connection = null)
         {
             if (!InstanceFinder.IsServerStarted)
                 return;
@@ -20,9 +16,9 @@ namespace ProjectKCPC.Scripts
                 ReplaceScenes = ReplaceOption.All
             };
 
-            if (connections != null)
+            if (connection != null)
             {
-                InstanceFinder.SceneManager.LoadConnectionScenes(connections.ToArray(), loadData);
+                InstanceFinder.SceneManager.LoadConnectionScenes(connection, loadData);
                 return;
             }
 

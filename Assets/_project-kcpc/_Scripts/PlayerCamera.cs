@@ -33,8 +33,8 @@ namespace ProjectKCPC.Scripts
 
             _config = config;
 
-            //ShowCursor(); //for testing ui
-            HideCursor();
+            ShowCursor(); //for testing ui
+            //HideCursor();
 
             _initialized = true;
         }

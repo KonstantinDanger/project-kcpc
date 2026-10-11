@@ -4,15 +4,14 @@ using FishNet.Transporting;
 using Steamworks;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
 namespace ProjectKCPC.Scripts.Lobby
 {
-    public class Lobby : IStartable
+    public class Lobby : IStartable, IDisposable
     {
         private const string HostAddressKey = "HostAddress";
 
@@ -56,6 +55,27 @@ namespace ProjectKCPC.Scripts.Lobby
             LobbyCreated = Callback<LobbyCreated_t>.Create(HandleLobbyCreated);
             JoinRequested = Callback<GameLobbyJoinRequested_t>.Create(HandleJoinRequest);
             LobbyEntered = Callback<LobbyEnter_t>.Create(HandleLobbyEnter);
+
+            NetManager.ClientManager.OnClientConnectionState += HandleClientConnectionState;
+        }
+
+        public void Dispose()
+        {
+            NetManager.ClientManager.OnClientConnectionState -= HandleClientConnectionState;
+        }
+
+        private void HandleClientConnectionState(ClientConnectionStateArgs args)
+        {
+            if (args.ConnectionState == LocalConnectionState.Stopped)
+            {
+                if (SteamManager.Initialized)
+                {
+                    SteamMatchmaking.LeaveLobby(LobbyId);
+                    ResetLobbyData();
+                }
+
+                SceneManager.LoadScene(StaticData.MainMenuScene);
+            }
         }
 
         //public void QuitGame()
@@ -109,7 +129,7 @@ namespace ProjectKCPC.Scripts.Lobby
             //    return;
         }
 
-        public IEnumerator Disband()
+        public void Disband()
         {
             //if (IsMatchActive())
             //    return;
@@ -117,27 +137,16 @@ namespace ProjectKCPC.Scripts.Lobby
             //if (!NetworkServer.active)
             //    return;
 
-            if (!IsHost() || !IsCreated)
-                yield break;
-
-            SteamMatchmaking.LeaveLobby(LobbyId);
-            ResetLobbyData();
-
-            List<NetworkConnection> clientsToDisconnect = new();
+            if (!NetManager.IsHostStarted || !IsCreated)
+                return;
 
             foreach (NetworkConnection connection in NetManager.ServerManager.Clients.Values)
-                if (!connection.IsLocalClient)
-                    clientsToDisconnect.Add(connection);
+            {
+                if (connection.IsHost)
+                    continue;
 
-            SceneLoader.Load(StaticData.MainMenuScene, clientsToDisconnect);
-
-            foreach (NetworkConnection connection in clientsToDisconnect)
                 connection.Disconnect(false);
-
-            SteamMatchmaking.CreateLobby(_cachedLobbyType, MaxPlayers);
-            yield return new WaitUntil(() => IsCreated);
-
-            //StartCoroutine(DisbandAfterServerStopRoutine());
+            }
         }
 
         public void Leave()
@@ -148,16 +157,15 @@ namespace ProjectKCPC.Scripts.Lobby
             //    return;
             //}
 
-            if (IsHost())
+            SteamMatchmaking.LeaveLobby(LobbyId);
+            ResetLobbyData();
+
+            if (NetManager.IsHostStarted)
             {
-                SteamMatchmaking.LeaveLobby(LobbyId);
-                ResetLobbyData();
                 NetManager.ServerManager.StopConnection(true);
                 return;
             }
 
-            SteamMatchmaking.LeaveLobby(LobbyId);
-            ResetLobbyData();
             NetManager.ClientManager.StopConnection();
 
             //StartCoroutine(InvokeLeaveWhenClientDisconnect());

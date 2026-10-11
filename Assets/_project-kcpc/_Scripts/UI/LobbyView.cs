@@ -15,7 +15,6 @@ namespace ProjectKCPC.Scripts.UI
 
         [Header("Buttons")]
         [SerializeField] private Button _returnToGameButton;
-        [SerializeField] private Button _quitGameButton;
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _inviteButton;
         [SerializeField] private Button _disbandButton;
@@ -36,11 +35,9 @@ namespace ProjectKCPC.Scripts.UI
             _returnToGameButton.onClick.AddListener(Close);
             _lobby.OnLobbyEnter += HandleLobbyEntered;
 
-            _quitGameButton.onClick.AddListener(HandleQuitToMainMenu);
-
             _startGameButton.onClick.AddListener(HandleStartGame);
             _inviteButton.onClick.AddListener(HandleInvite);
-            _leaveButton.onClick.AddListener(HandleLeaveLobby);
+            _leaveButton.onClick.AddListener(HandleLeave);
             _disbandButton.onClick.AddListener(HandleDisbandLobby);
 
             HandleUIChange();
@@ -52,11 +49,9 @@ namespace ProjectKCPC.Scripts.UI
             _returnToGameButton.onClick.RemoveListener(Close);
             _lobby.OnLobbyEnter -= HandleLobbyEntered;
 
-            _quitGameButton.onClick.RemoveListener(HandleQuitToMainMenu);
-
             _startGameButton.onClick.RemoveListener(HandleStartGame);
             _inviteButton.onClick.RemoveListener(HandleInvite);
-            _leaveButton.onClick.RemoveListener(HandleLeaveLobby);
+            _leaveButton.onClick.RemoveListener(HandleLeave);
             _disbandButton.onClick.RemoveListener(HandleDisbandLobby);
         }
 
@@ -68,15 +63,6 @@ namespace ProjectKCPC.Scripts.UI
             HandleUIChange();
 
             base.OnEnable();
-        }
-
-        private void HandleQuitToMainMenu()
-        {
-            HandleLeaveLobby();
-
-            //if (IsLobbyOwner())
-            //    _lobby.Disband();
-            //_lobby.QuitGame();
         }
 
         private void HandleStartGame()
@@ -92,21 +78,12 @@ namespace ProjectKCPC.Scripts.UI
 
         private void HandleDisbandLobby()
         {
-            StartCoroutine(DisbandLobbyRoutine());
-        }
-
-        private IEnumerator DisbandLobbyRoutine()
-        {
-            _disbandButton.enabled = false;
-            yield return _lobby.Disband();
-            //_lobby.Create(_lobbyType);
+            _lobby.Disband();
             HandleUIChange();
-            _disbandButton.enabled = true;
         }
 
-        private void HandleLeaveLobby()
+        private void HandleLeave()
         {
-            _sceneLoader.Load(_staticData.MainMenuScene);
             _lobby.Leave();
             HandleUIChange();
         }
@@ -125,8 +102,6 @@ namespace ProjectKCPC.Scripts.UI
 
             SetActive(_returnToGameButton, true);
 
-            SetActive(_quitGameButton, !IsMissionGoing());
-
             SetActive(_startGameButton, IsLobbyOwner() && _lobby.IsCreated && !IsMissionGoing());
 
             if (_startGameButton.gameObject.activeInHierarchy)
@@ -136,7 +111,7 @@ namespace ProjectKCPC.Scripts.UI
 
             SetActive(_disbandButton, _lobby.IsCreated && IsLobbyOwner() && !IsMissionGoing());
 
-            SetActive(_leaveButton, _lobby.IsCreated && (IsLobbyOwner() && IsMissionGoing() || !IsLobbyOwner()));
+            SetActive(_leaveButton, _lobby.IsCreated);
         }
 
         private void SetActive(Button btn, bool active)
