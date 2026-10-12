@@ -19,6 +19,8 @@ namespace ProjectKCPC.Scripts.Entity
         private IStateMachine _stateMachine;
         private Vector3 _movementInputDirection;
 
+        public Vector3 CachedMovementDirection => _movementInputDirection;
+
         private void Awake()
         {
             _input.Initialize();
@@ -26,7 +28,6 @@ namespace ProjectKCPC.Scripts.Entity
 
         private void OnEnable()
         {
-
             _input.Enable();
 
             _input.JumpAction += HandleJump;
@@ -43,7 +44,6 @@ namespace ProjectKCPC.Scripts.Entity
         {
             _playerCamera.Initialize(HasActionAuthority(), CameraConfig);
             _stateMachine = new PlayerStateMachine(this);
-            _input.Initialize();
 
             base.OnStartClient();
         }
@@ -55,6 +55,7 @@ namespace ProjectKCPC.Scripts.Entity
 
             _stateMachine.CurrentState.Update(Time.deltaTime);
             _input.UpdateLogic();
+
             Rotate();
             CacheMovementDirection();
         }
@@ -79,17 +80,8 @@ namespace ProjectKCPC.Scripts.Entity
         }
 
         private void Rotate()
-        {
-            Vector2 input = _input.Rotation;
-
-            _playerCamera.Rotate(input, CameraConfig.RotationSpeed);
-        }
-
-        private void Move()
-        {
-            Movement.Move(_movementInputDirection, MovementConfig.WalkSpeed);
-        }
-
+            => _playerCamera.Rotate(_input.Rotation, CameraConfig.RotationSpeed);
+        
         private bool HasActionAuthority()
         {
             return IsOwner;

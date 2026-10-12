@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8588ea2620a59c428558661ea0a4651, type: 3}
   m_Name: Config_Jump_Player
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.Config.JumpConfig
-  <JumpHeight>k__BackingField: 1.8
+  <JumpHeight>k__BackingField: 1.2

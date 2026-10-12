@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025177395e251a744b0fd12041019a6a, type: 3}
   m_Name: Config_Movement_Player
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.Config.MovementConfig
-  <WalkSpeed>k__BackingField: 2
-  <SprintSpeed>k__BackingField: 3.2
+  <WalkSpeed>k__BackingField: 8
+  <SprintSpeed>k__BackingField: 11
   <MovementSmoothness>k__BackingField: 0.03
   <AirMovementAcceleration>k__BackingField: 2

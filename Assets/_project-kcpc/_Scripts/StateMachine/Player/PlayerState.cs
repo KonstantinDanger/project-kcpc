@@ -28,10 +28,7 @@ namespace ProjectKCPC.Scripts.StateMachine
             => _stateMachine.ChangeState<T>();
 
         protected Vector3 GetMovementDirection(Vector2 movementVector)
-        {
-            Vector3 v = player.transform.right * movementVector.x + player.transform.forward * movementVector.y;
-            return Vector3.ClampMagnitude(v, 1f);
-        }
+            => player.CachedMovementDirection;
 
         protected T Get<T>(Player player)
         {

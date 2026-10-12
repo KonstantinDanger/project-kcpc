@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace ProjectKCPC.Scripts
 {
@@ -19,8 +18,6 @@ namespace ProjectKCPC.Scripts
         public event Action JumpAction;
         public event Action OnMenuInvoked;
         public event Action AttackAction;
-        public event Action<int> AbilityAction;
-        public event Action OnUpgradeMenuInvoked;
         public event Action OnInteraction;
 
         public void Initialize()
@@ -49,15 +46,6 @@ namespace ProjectKCPC.Scripts
             _movementInput = movement;
             _rotationInput = rotation;
             _isSprinting = sprinting;
-        }
-
-        private void HandleAbilityPerformed(InputAction.CallbackContext context)
-        {
-            string keyName = context.control.name;
-
-            int.TryParse(keyName, out int abilityIndex);
-
-            AbilityAction?.Invoke(abilityIndex);
         }
 
         public void Enable()
