@@ -5,7 +5,7 @@ namespace ProjectKCPC.Scripts.Movement
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(SurfaceChecker))]
-    public class CharacterControllerPlayerMovement : MonoBehaviour, IMovable
+    public class CharacterControllerPlayerMovement : MonoBehaviour, IMovable, IApplyGravity, IExternalForceHandler, IJumpable
     {
         public event Action OnMove;
 
@@ -79,7 +79,7 @@ namespace ProjectKCPC.Scripts.Movement
             {
                 Vector3 jumpForce = _surfaceChecker.SlopeHitInfo.normal * 0.1f;
                 jumpForce.y = 0f;
-                AddExternalForce(jumpForce);
+                ApplyExternalForce(jumpForce);
             }
 
             _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -105,7 +105,10 @@ namespace ProjectKCPC.Scripts.Movement
             //    OnMove?.Invoke();
         }
 
-        public void AddExternalForce(Vector3 force)
+        public void ApplyExternalForce(Vector3 direction, float force)
+            => ApplyExternalForce(direction.normalized * force);
+
+        public void ApplyExternalForce(Vector3 force)
             => _externalForce += force;
 
         public void UpdateExternalForce(float drag)

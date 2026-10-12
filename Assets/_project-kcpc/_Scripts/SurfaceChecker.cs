@@ -7,22 +7,19 @@ namespace ProjectKCPC.Scripts
         [Header("Transforms")]
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private Transform _ceilingCheck;
-        [SerializeField] private Transform _wallCheck;
-        [SerializeField] private Transform _ledgeCheck;
+        //[SerializeField] private Transform _ledgeCheck;
         //[SerializeField] private BoxCollider _aboveLedgeCheck;
 
         [Header("Values")]
         [SerializeField, Min(0f)] private float _slopeCheckDistance = 1f;
         [SerializeField, Min(0f)] private float _groundCheckRadius = 0.4f;
         [SerializeField, Min(0f)] private float _ceilingCheckRadius = 0.4f;
-        [SerializeField, Min(0f)] private float _wallCheckRadius = 0.4f;
-        [SerializeField, Min(0f)] private float _ledgeCheckRadius = 0.4f;
+        //[SerializeField, Min(0f)] private float _ledgeCheckRadius = 0.4f;
         //[SerializeField, Min(0f)] private float _ledgeAboveCheckDistance = 1f;
 
         [Header("Layers")]
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private LayerMask _ceilingLayer;
-        [SerializeField] private LayerMask _wallLayer;
         //[SerializeField] private LayerMask _ledgeLayer;
 
         [Header("Debug")]
@@ -82,8 +79,11 @@ namespace ProjectKCPC.Scripts
             color.a = 0.5f;
             Gizmos.color = color;
         
-            Gizmos.DrawSphere(_groundCheck.position, _groundCheckRadius);
-            Gizmos.DrawSphere(_ceilingCheck.position, _ceilingCheckRadius);
+            if (_groundCheck != null)
+                Gizmos.DrawSphere(_groundCheck.position, _groundCheckRadius);
+
+            if (_ceilingCheck != null)
+                Gizmos.DrawSphere(_ceilingCheck.position, _ceilingCheckRadius);
             //Gizmos.DrawSphere(_ledgeCheck.position, _ledgeCheckRadius);
 
             //Gizmos.color = !IsLedgeAboveEmpty ? Color.red : Color.green;

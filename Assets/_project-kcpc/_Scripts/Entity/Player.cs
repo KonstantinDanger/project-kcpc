@@ -1,37 +1,32 @@
-using FishNet.Object;
 using ProjectKCPC.Scripts.Config;
+using ProjectKCPC.Scripts.StateMachine;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.Entity
 {
-    public class Player : NetworkBehaviour
+    public class Player : Entity
     {
         //private readonly SyncVar<ulong> _steamID;
         //private readonly SyncVar<string> _steamName;
         //public ulong SteamID => _steamID.Value;
         //public string SteamName => _steamName.Value;
 
-        [field: Header("Configs")]
-        [field: SerializeField] public CameraConfig CameraConfig {get; private set;}
-        [field: SerializeField] public MovementConfig MovementConfig { get; private set; }
-
         [Header("Components")]
         [SerializeField] private PlayerCamera _playerCamera;
-        [SerializeField] private IMovable _movement;
         [SerializeField] private Transform _directionPivot;
         [SerializeField] private PlayerInput _input;
 
+        private IStateMachine _stateMachine;
         private Vector3 _movementInputDirection;
 
-        public override void OnStartClient()
+        private void Awake()
         {
-            _playerCamera.Initialize(HasActionAuthority(), CameraConfig);
-            
-            base.OnStartClient();
+            _input.Initialize();
         }
 
         private void OnEnable()
         {
+
             _input.Enable();
 
             _input.JumpAction += HandleJump;
@@ -44,11 +39,22 @@ namespace ProjectKCPC.Scripts.Entity
             _input.JumpAction -= HandleJump;
         }
 
-        private void Update()
+        public override void OnStartClient()
+        {
+            _playerCamera.Initialize(HasActionAuthority(), CameraConfig);
+            _stateMachine = new PlayerStateMachine(this);
+            _input.Initialize();
+
+            base.OnStartClient();
+        }
+
+        protected override void OnUpdate()
         {
             if (!HasActionAuthority())
                 return;
 
+            _stateMachine.CurrentState.Update(Time.deltaTime);
+            _input.UpdateLogic();
             Rotate();
             CacheMovementDirection();
         }
@@ -64,20 +70,12 @@ namespace ProjectKCPC.Scripts.Entity
             _movementInputDirection.Normalize();
         }
 
-        private void FixedUpdate()
-        {
-            if (!HasActionAuthority())
-                return;
-
-            Move();
-        }
-
         private void HandleJump()
         {
             if (!HasActionAuthority())
                 return;
 
-            _movement.Jump(MovementConfig.JumpHeight);
+            Jump.Jump(JumpConfig.JumpHeight, GravityConfig.Gravity);
         }
 
         private void Rotate()
@@ -89,7 +87,7 @@ namespace ProjectKCPC.Scripts.Entity
 
         private void Move()
         {
-            _movement.Move(_movementInputDirection, MovementConfig.WalkSpeed);
+            Movement.Move(_movementInputDirection, MovementConfig.WalkSpeed);
         }
 
         private bool HasActionAuthority()

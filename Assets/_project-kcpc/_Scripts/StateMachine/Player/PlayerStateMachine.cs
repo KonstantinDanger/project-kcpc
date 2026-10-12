@@ -6,8 +6,8 @@ namespace ProjectKCPC.Scripts.StateMachine
     {
         public PlayerStateMachine(Player player)
         {
-            AddState<PlayerMovementState>(new(player, this))
-            .AddState<PlayerAirborneState>(new(player, this))
+            AddState(new PlayerMovementState(player, this))
+            .AddState(new PlayerAirborneState(player, this))
             .StartWith<PlayerMovementState>();
         }
     }
