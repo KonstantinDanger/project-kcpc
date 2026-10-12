@@ -17,8 +17,10 @@ namespace ProjectKCPC.Scripts
         private void Update()
         {
             Vector3 velocity = _movement.Velocity;
+            velocity.y = 0f;
 
-            _modelRotation.Rotate(velocity, _rotationSpeed);
+            if (velocity.sqrMagnitude > 1f)
+                _modelRotation.Rotate(velocity, _rotationSpeed);
         }
     }
 }
