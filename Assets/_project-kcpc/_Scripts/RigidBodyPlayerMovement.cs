@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-namespace ProjectKCPC.Scripts
+namespace ProjectKCPC.Scripts.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerMovement : MonoBehaviour, IMovable
+    public class RigidBodyPlayerMovement : MonoBehaviour, IMovable
     {
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private ForceMode _moveForceMode;
@@ -13,15 +13,18 @@ namespace ProjectKCPC.Scripts
 
         public void Move(Vector3 direction, float speed, float smoothness = 0.03F)
         {
-            Velocity = speed * Time.fixedDeltaTime * direction;
-
-            _rigidbody.AddForce(Velocity, _moveForceMode);
+            Velocity = new Vector3(direction.x, 0f, direction.z).normalized;
+            _rigidbody.AddForce(speed * Velocity, _moveForceMode);
 
             LimitVelocity(speed);
         }
 
         public void Jump(float height)
         {
+            Vector3 velocity = _rigidbody.linearVelocity;
+            velocity.y = 0f;
+            _rigidbody.linearVelocity = velocity;
+
             _rigidbody.AddForce(transform.up * height, _jumpForceMode);
         }
 

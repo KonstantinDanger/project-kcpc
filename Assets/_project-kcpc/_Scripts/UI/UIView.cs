@@ -11,8 +11,8 @@ namespace ProjectKCPC.Scripts.UI
 
         private void Start()
         {
-            //if (gameObject.activeSelf)
-            //    gameObject.SetActive(false);
+            if (gameObject.activeSelf)
+                gameObject.SetActive(false);
         }
 
         protected virtual void OnEnable()

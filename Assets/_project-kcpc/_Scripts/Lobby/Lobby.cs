@@ -64,20 +64,6 @@ namespace ProjectKCPC.Scripts.Lobby
             NetManager.ClientManager.OnClientConnectionState -= HandleClientConnectionState;
         }
 
-        private void HandleClientConnectionState(ClientConnectionStateArgs args)
-        {
-            if (args.ConnectionState == LocalConnectionState.Stopped)
-            {
-                if (SteamManager.Initialized)
-                {
-                    SteamMatchmaking.LeaveLobby(LobbyId);
-                    ResetLobbyData();
-                }
-
-                SceneManager.LoadScene(StaticData.MainMenuScene);
-            }
-        }
-
         //public void QuitGame()
         //{
         //    //if (IsMatchActive())
@@ -192,6 +178,20 @@ namespace ProjectKCPC.Scripts.Lobby
             //    return;
 
             SteamFriends.ActivateGameOverlayInviteDialogConnectString(LobbyId.ToString());
+        }
+
+        private void HandleClientConnectionState(ClientConnectionStateArgs args)
+        {
+            if (args.ConnectionState == LocalConnectionState.Stopped)
+            {
+                if (SteamManager.Initialized)
+                {
+                    SteamMatchmaking.LeaveLobby(LobbyId);
+                    ResetLobbyData();
+                }
+
+                SceneManager.LoadScene(StaticData.MainMenuScene);
+            }
         }
 
         private void HandleLobbyCreated(LobbyCreated_t callback)

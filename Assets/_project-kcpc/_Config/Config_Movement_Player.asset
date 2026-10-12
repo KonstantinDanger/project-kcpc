@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025177395e251a744b0fd12041019a6a, type: 3}
   m_Name: Config_Movement_Player
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.Config.MovementConfig
-  <MovementSpeed>k__BackingField: 80
-  <JumpHeight>k__BackingField: 13.2
+  <MovementSpeed>k__BackingField: 53.4
+  <JumpHeight>k__BackingField: 879

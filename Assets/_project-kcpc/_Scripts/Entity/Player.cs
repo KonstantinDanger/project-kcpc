@@ -11,23 +11,21 @@ namespace ProjectKCPC.Scripts.Entity
         //public ulong SteamID => _steamID.Value;
         //public string SteamName => _steamName.Value;
 
-        [SerializeField] private CameraConfig _cameraConfig;
-        [SerializeField] private MovementConfig _movementConfig;
+        [field: Header("Configs")]
+        [field: SerializeField] public CameraConfig CameraConfig {get; private set;}
+        [field: SerializeField] public MovementConfig MovementConfig { get; private set; }
+
+        [Header("Components")]
         [SerializeField] private PlayerCamera _playerCamera;
-        [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private IMovable _movement;
         [SerializeField] private Transform _directionPivot;
+        [SerializeField] private PlayerInput _input;
 
-        private PlayerInput _input;
         private Vector3 _movementInputDirection;
-
-        private void Awake()
-        {
-            _input = new PlayerInput();
-        }
 
         public override void OnStartClient()
         {
-            _playerCamera.Initialize(HasActionAuthority(), _cameraConfig);
+            _playerCamera.Initialize(HasActionAuthority(), CameraConfig);
             
             base.OnStartClient();
         }
@@ -36,14 +34,14 @@ namespace ProjectKCPC.Scripts.Entity
         {
             _input.Enable();
 
-            _input.Player.Jump.performed += HandleJump;
+            _input.JumpAction += HandleJump;
         }
 
         private void OnDisable()
         {
             _input.Disable();
          
-            _input.Player.Jump.performed -= HandleJump;
+            _input.JumpAction -= HandleJump;
         }
 
         private void Update()
@@ -57,7 +55,7 @@ namespace ProjectKCPC.Scripts.Entity
 
         private void CacheMovementDirection()
         {
-            Vector2 moveInput = _input.Player.Move.ReadValue<Vector2>();
+            Vector2 moveInput = _input.MovementVector;
 
             Vector3 projectedForward = Vector3.ProjectOnPlane(_directionPivot.forward, transform.up).normalized;
             Vector3 projectedRight = Vector3.ProjectOnPlane(_directionPivot.right, transform.up).normalized;
@@ -74,24 +72,24 @@ namespace ProjectKCPC.Scripts.Entity
             Move();
         }
 
-        private void HandleJump(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        private void HandleJump()
         {
             if (!HasActionAuthority())
                 return;
 
-            _movement.Jump(_movementConfig.JumpHeight);
+            _movement.Jump(MovementConfig.JumpHeight);
         }
 
         private void Rotate()
         {
-            Vector2 input = _input.Player.Look.ReadValue<Vector2>();
+            Vector2 input = _input.Rotation;
 
-            _playerCamera.Rotate(input, _cameraConfig.RotationSpeed);
+            _playerCamera.Rotate(input, CameraConfig.RotationSpeed);
         }
 
         private void Move()
         {
-            _movement.Move(_movementInputDirection, _movementConfig.MovementSpeed);
+            _movement.Move(_movementInputDirection, MovementConfig.WalkSpeed);
         }
 
         private bool HasActionAuthority()

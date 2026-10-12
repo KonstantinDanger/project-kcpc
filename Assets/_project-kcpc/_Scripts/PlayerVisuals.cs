@@ -1,3 +1,4 @@
+using ProjectKCPC.Scripts.Movement;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts
@@ -5,7 +6,7 @@ namespace ProjectKCPC.Scripts
     public class PlayerVisuals : MonoBehaviour
     {
         [SerializeField] private SimpleRotatable _modelRotation;
-        [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private IMovable _movement;
         [SerializeField, Min(0f)] private float _rotationSpeed;
 
         private void Update()
