@@ -13,6 +13,7 @@ namespace ProjectKCPC.Scripts
 
         public Vector2 MovementVector => _movementInput;
         public Vector2 Rotation => _rotationInput;
+        public bool IsCrouching { get; private set; }
         public bool IsSprinting => _isSprinting;
 
         public event Action JumpAction;
@@ -25,12 +26,12 @@ namespace ProjectKCPC.Scripts
             _actions = new();
 
             _actions.Player.Attack.performed += _ => AttackAction?.Invoke();
-
             _actions.Player.Jump.performed += _ => JumpAction?.Invoke();
             //_actions.UI.Menu.performed += _ => OnMenuInvoked?.Invoke();
 
             _actions.Player.Sprint.started += _ => _isSprinting = true;
             _actions.Player.Sprint.canceled += _ => _isSprinting = false;
+            _actions.Player.Crouch.performed += _ => IsCrouching = !IsCrouching;
 
             _actions.Player.Interact.performed += _ => OnInteraction?.Invoke();
         }

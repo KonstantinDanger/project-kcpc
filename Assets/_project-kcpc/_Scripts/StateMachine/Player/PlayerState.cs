@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.StateMachine 
-{ 
+{
     public class PlayerState : IState
     {
         private readonly IStateMachine _stateMachine;

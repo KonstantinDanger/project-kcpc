@@ -4,6 +4,7 @@ namespace ProjectKCPC.Scripts.StateMachine
 { 
     public class PlayerGroundedState : PlayerState
     {
+        private PlayerInput _input;
         private SurfaceChecker _surfaceChecker;
 
         public PlayerGroundedState(Player player, IStateMachine stateMachine) : base(player, stateMachine) { }
@@ -12,6 +13,7 @@ namespace ProjectKCPC.Scripts.StateMachine
         {
             base.OnEnter();
 
+            _input = Get<PlayerInput>(player);
             _surfaceChecker = Get<SurfaceChecker>(player);
         }
 
@@ -19,6 +21,9 @@ namespace ProjectKCPC.Scripts.StateMachine
         {
             if (!_surfaceChecker.IsGrounded)
                 Transit<PlayerAirborneState>();
+
+            if (_input.IsCrouching)
+                Transit<PlayerCrouchState>();
         }
     }
 }

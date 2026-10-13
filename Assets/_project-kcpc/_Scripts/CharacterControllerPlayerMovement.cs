@@ -5,7 +5,7 @@ namespace ProjectKCPC.Scripts.Movement
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(SurfaceChecker))]
-    public class CharacterControllerPlayerMovement : MonoBehaviour, IMovable, IApplyGravity, IExternalForceHandler, IJumpable
+    public class CharacterControllerPlayerMovement : MonoBehaviour, IMovable, IApplyGravity, IExternalForceHandler, IJumpable, ICrouchable
     {
         public event Action OnMove;
 
@@ -25,6 +25,10 @@ namespace ProjectKCPC.Scripts.Movement
 
         private Vector3 _horizontalVelocity;
         private float _verticalVelocity;
+        private float _initialControllerHeight;
+
+        private void Awake()
+            => _initialControllerHeight = _controller.height;
 
         public void ApplyGravity(float gravity, float maxFallSpeed)
         {
@@ -129,6 +133,16 @@ namespace ProjectKCPC.Scripts.Movement
             _controller.enabled = true;
         }
 
-        /*[ClientRpc]*/ private void RpcOnMove() => OnMove?.Invoke();
+        public void SetCrouch(bool isCrouching, float crouchHeight, float crouchAcceleration)
+        {
+            float selectedCrouchHeight = isCrouching ? crouchHeight : _initialControllerHeight;
+            float crouchDelta = crouchAcceleration * Time.deltaTime;
+            float currentHeight = Mathf.Lerp(_controller.height, selectedCrouchHeight, crouchDelta);
+
+            _controller.height = currentHeight;
+        }
+
+        /*[ClientRpc]*/
+        private void RpcOnMove() => OnMove?.Invoke();
     }
 }
