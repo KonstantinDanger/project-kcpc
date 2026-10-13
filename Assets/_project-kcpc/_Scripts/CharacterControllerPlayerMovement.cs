@@ -133,13 +133,15 @@ namespace ProjectKCPC.Scripts.Movement
             _controller.enabled = true;
         }
 
-        public void SetCrouch(bool isCrouching, float crouchHeight, float crouchAcceleration)
+        public float SetCrouch(bool isCrouching, float crouchHeight, float crouchAcceleration)
         {
             float selectedCrouchHeight = isCrouching ? crouchHeight : _initialControllerHeight;
             float crouchDelta = crouchAcceleration * Time.deltaTime;
             float currentHeight = Mathf.Lerp(_controller.height, selectedCrouchHeight, crouchDelta);
 
             _controller.height = currentHeight;
+
+            return currentHeight;
         }
 
         /*[ClientRpc]*/

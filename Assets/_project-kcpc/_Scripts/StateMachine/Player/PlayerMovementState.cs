@@ -7,48 +7,30 @@ namespace ProjectKCPC.Scripts.StateMachine
     public class PlayerMovementState : PlayerGroundedState
     {
         private readonly MovementConfig _movementConfig;
-        private readonly GravityConfig _gravityConfig;
-        private readonly ExternalForceConfig _externalForceConfig;
+        private readonly PlayerInput _input;
 
-        private readonly IMovable _movable;
-        private readonly IApplyGravity _gravityApplier;
-        private readonly PlayerInput _inputBrain;
-        private readonly IExternalForceHandler _externalForceHandler;
-
-        private float _currentSpeed;
-        private Vector3 _movementDirection;
-        private Vector2 MovementInput => _inputBrain.MovementVector;
+        private float MovementSpeed 
+            => (_input.IsSprinting && _input.MovementVector != Vector2.zero) 
+            ? _movementConfig.SprintSpeed 
+            : _movementConfig.WalkSpeed;
 
         public PlayerMovementState(Player player, IStateMachine fsm) : base(player, fsm)
         {
             _movementConfig = player.MovementConfig;
-            _gravityConfig = player.GravityConfig;
-            _externalForceConfig = player.ExternalForceConfig;
-
-            _movable = Get<IMovable>(player);
-            _inputBrain = Get<PlayerInput>(player);
-            _gravityApplier = Get<IApplyGravity>(player);
-            _externalForceHandler = Get<IExternalForceHandler>(player);
+            _input = Get<PlayerInput>(player);
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            _currentSpeed =
-                (_inputBrain.IsSprinting && MovementInput != Vector2.zero) ?
-                _movementConfig.SprintSpeed : _movementConfig.WalkSpeed;
+            if (_input.IsCrouching)
+            {
+                Transit<PlayerCrouchState>();
+                return;
+            }
 
-            _movementDirection = GetMovementDirection(MovementInput);
-            _movable.Move(_movementDirection, _currentSpeed, _movementConfig.MovementSmoothness);
-            _gravityApplier.ApplyGravity(_gravityConfig.Gravity, _gravityConfig.MaxFallSpeed);
-            _externalForceHandler.UpdateExternalForce(_externalForceConfig.Drag);
-
+            base.Move(_movementConfig.MovementSmoothness);
+            base.SetSpeed(MovementSpeed, _movementConfig.SpeedChangeAcceleration, deltaTime);
             base.OnUpdate(deltaTime);
         }
-
-        public override string ToString()
-            => $"Movement state of player {player.name}" +
-            $"\nCurrent speed: {_currentSpeed}" +
-            $"\nMovement input: {MovementInput}" +
-            $"\nMovement direction: {_movementDirection}";
     }
 }

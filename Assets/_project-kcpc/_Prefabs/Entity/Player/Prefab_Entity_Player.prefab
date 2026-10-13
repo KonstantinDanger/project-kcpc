@@ -665,6 +665,7 @@ MonoBehaviour:
   <GravityConfig>k__BackingField: {fileID: 11400000, guid: f3904102d87fe9f4d8ca689718604cbf, type: 2}
   <ExternalForceConfig>k__BackingField: {fileID: 11400000, guid: 10adf28bd2c2eee4b92dbc9574b23e03, type: 2}
   <JumpConfig>k__BackingField: {fileID: 11400000, guid: b1b75514c1ad38246bc69d7f26ab3cc1, type: 2}
+  <CrouchConfig>k__BackingField: {fileID: 11400000, guid: 041ec91a4a3508d4c8d4f4d41ee3c299, type: 2}
   _movementRef:
     _underlyingValue: {fileID: 2150048779946496212}
   _gravityRef:
@@ -672,6 +673,8 @@ MonoBehaviour:
   _externalForceRef:
     _underlyingValue: {fileID: 2150048779946496212}
   _jumpRef:
+    _underlyingValue: {fileID: 2150048779946496212}
+  _crouchRef:
     _underlyingValue: {fileID: 2150048779946496212}
   _playerCamera: {fileID: -6030164769973873405}
   _directionPivot: {fileID: 4137675569305272947}

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ProjectKCPC.Scripts.StateMachine 
 {
-    public class PlayerState : IState
+    public abstract class PlayerState : IState
     {
         private readonly IStateMachine _stateMachine;
         protected readonly Player player;
