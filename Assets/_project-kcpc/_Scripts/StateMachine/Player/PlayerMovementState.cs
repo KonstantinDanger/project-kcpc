@@ -8,6 +8,7 @@ namespace ProjectKCPC.Scripts.StateMachine
     {
         private readonly MovementConfig _movementConfig;
         private readonly PlayerInput _input;
+        private readonly SurfaceChecker _surfaceChecker;
 
         private float MovementSpeed 
             => (_input.IsSprinting && _input.MovementVector != Vector2.zero) 
@@ -18,11 +19,12 @@ namespace ProjectKCPC.Scripts.StateMachine
         {
             _movementConfig = player.MovementConfig;
             _input = Get<PlayerInput>(player);
+            _surfaceChecker = Get<SurfaceChecker>(player);
         }
 
-        protected override void OnUpdate(float deltaTime)
+        protected override void Update(float deltaTime)
         {
-            if (_input.IsCrouching)
+            if (_input.IsCrouching || _surfaceChecker.IsUnderCeiling)
             {
                 Transit<PlayerCrouchState>();
                 return;
@@ -30,7 +32,6 @@ namespace ProjectKCPC.Scripts.StateMachine
 
             base.Move(_movementConfig.MovementSmoothness);
             base.SetSpeed(MovementSpeed, _movementConfig.SpeedChangeAcceleration, deltaTime);
-            base.OnUpdate(deltaTime);
         }
     }
 }

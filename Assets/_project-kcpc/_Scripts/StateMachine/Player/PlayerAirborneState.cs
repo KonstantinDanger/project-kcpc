@@ -7,12 +7,8 @@ namespace ProjectKCPC.Scripts.StateMachine
     public class PlayerAirborneState : PlayerState
     {
         private readonly MovementConfig _movementConfig;
-        private readonly GravityConfig _gravityConfig;
-        private readonly ExternalForceConfig _externalForceConfig;
 
         private readonly IMovable _movable;
-        private readonly IExternalForceHandler _externalForceHandler;
-        private readonly IApplyGravity _gravityApplier;
         private readonly SurfaceChecker _surfaceChecker;
         private readonly PlayerInput _input;
 
@@ -24,12 +20,8 @@ namespace ProjectKCPC.Scripts.StateMachine
         public PlayerAirborneState(Player player, IStateMachine stateMachine) : base(player, stateMachine)
         {
             _movementConfig = player.MovementConfig;
-            _gravityConfig = player.GravityConfig;
-            _externalForceConfig = player.ExternalForceConfig;
 
             _movable = Get<IMovable>(player);
-            _externalForceHandler = Get<IExternalForceHandler>(player);
-            _gravityApplier = Get<IApplyGravity>(player);
             _surfaceChecker = Get<SurfaceChecker>(player);
             _input = Get<PlayerInput>(player);
         }
@@ -49,15 +41,12 @@ namespace ProjectKCPC.Scripts.StateMachine
 
         protected override void OnUpdate(float deltaTime)
         {
-            _gravityApplier.ApplyGravity(_gravityConfig.Gravity, _gravityConfig.MaxFallSpeed);
-
             if (_surfaceChecker.IsGrounded)
             {
                 Transit<PlayerMovementState>();
                 return;
             }
 
-            _externalForceHandler.UpdateExternalForce(_externalForceConfig.Drag);
             MaintainAirborneVelocity(deltaTime);
         }
 

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6812e9bfa7585df4394ac6c5d3f5adbf, type: 3}
   m_Name: Config_Gravity_Player
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.Config.GravityConfig
-  <Gravity>k__BackingField: -8.4
+  <Gravity>k__BackingField: -26.7
   <MaxFallSpeed>k__BackingField: 20

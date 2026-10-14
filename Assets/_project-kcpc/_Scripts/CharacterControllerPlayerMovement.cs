@@ -18,6 +18,7 @@ namespace ProjectKCPC.Scripts.Movement
 
         public bool IsGravityActive { get; set; } = true;
         public bool IsGrounded => _surfaceChecker.IsGrounded;
+        public float InitialHeight => _initialControllerHeight;
 
         private Vector3 _externalForce;
         private Vector3 _movementDelta;

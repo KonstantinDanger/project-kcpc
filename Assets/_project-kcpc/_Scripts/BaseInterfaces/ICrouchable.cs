@@ -2,6 +2,8 @@
 {
     public interface ICrouchable 
     {
+        public float InitialHeight { get; }
+
         /// <summary>
         /// Returns current height
         /// </summary>

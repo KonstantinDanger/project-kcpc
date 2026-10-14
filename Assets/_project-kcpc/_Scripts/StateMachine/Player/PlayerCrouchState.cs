@@ -1,11 +1,16 @@
 ﻿using ProjectKCPC.Scripts.Config;
 using ProjectKCPC.Scripts.Entity;
+using ProjectKCPC.Scripts.Extensions;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.StateMachine 
 {
     public class PlayerCrouchState : PlayerGroundedState
     {
+        private enum CrouchState { None = 0, CrouchingDown = 1, StandingUp = 2}
+
+        private const float CrouchStateChangeProgressThreshold = 0.95f;
+
         private readonly ICrouchable _crouch;
 
         private readonly SurfaceChecker _surfaceChecker;
@@ -15,6 +20,8 @@ namespace ProjectKCPC.Scripts.StateMachine
         private readonly CrouchConfig _crouchConfig;
 
         private readonly Vector3 _groundCheckInitialPosition;
+
+        private CrouchState _crouchState = CrouchState.None;
 
         public PlayerCrouchState(Player player, IStateMachine stateMachine) : base(player, stateMachine)
         {
@@ -32,40 +39,67 @@ namespace ProjectKCPC.Scripts.StateMachine
         {
             base.OnEnter();
 
-            UnityEngine.Debug.Log("crouch state enter ");
+            SetGroundCheckerLocalPosition(_groundCheckInitialPosition);
         }
 
         protected override void OnExit()
         {
             base.OnExit();
-            SetCrouch(false);
 
-            AddGroundCheckerPositionOffsetY(-_crouchConfig.CrouchHeight);
+            SetGroundCheckerLocalPosition(_groundCheckInitialPosition);
         }
 
-        protected override void OnUpdate(float deltaTime)
+        protected override void Update(float deltaTime)
         {
-            //base.OnUpdate(deltaTime);
-
             float speed = _input.MovementVector == Vector2.zero ? 0f : _crouchConfig.CrouchSpeed;
-            base.SetSpeed(speed, _movementConfig.SpeedChangeAcceleration, deltaTime); 
+            base.SetSpeed(_crouchState == CrouchState.StandingUp ? _movementConfig.WalkSpeed : speed, _movementConfig.SpeedChangeAcceleration, deltaTime); 
             base.Move(_movementConfig.MovementSmoothness);
 
-            float currentHeight = SetCrouch(true);
-            AddGroundCheckerPositionOffsetY(currentHeight);
+            if (_surfaceChecker.IsUnderCeiling)
+            {
+                _crouchState = SetCrouch(true);
+                return;
+            }
 
-            if (!_input.IsCrouching && !_surfaceChecker.IsUnderCeiling)
+            _crouchState = SetCrouch(_input.IsCrouching);
+            
+            if (!_input.IsCrouching && _crouchState == CrouchState.None)
+            {
                 Transit<PlayerMovementState>();
+            }
         }
 
-        private void AddGroundCheckerPositionOffsetY(float yOffset)
+        private CrouchState SetCrouch(bool isActive)
         {
-            Vector3 position = _groundCheckInitialPosition;
-            position.y = _groundCheckInitialPosition.y + yOffset;
+            float currentHeight = _crouch.SetCrouch(isActive, _crouchConfig.CrouchHeight, _crouchConfig.CrouchAcceleration);
+            float heightToShrink = _crouch.InitialHeight - _crouchConfig.CrouchHeight;
+            float shrinkedHeight = _crouch.InitialHeight - currentHeight;
+            float progress =  shrinkedHeight / heightToShrink;
+            progress = isActive ? progress : 1 - progress;
+
+            Vector3 startingPosition = isActive 
+                ? _groundCheckInitialPosition 
+                : _groundCheckInitialPosition.WithY(_groundCheckInitialPosition.y + _crouchConfig.CrouchHeight);
+
+            Vector3 targetGroundCheckPosition = isActive 
+                ? _groundCheckInitialPosition.WithY(_groundCheckInitialPosition.y + _crouchConfig.CrouchHeight) 
+                : _groundCheckInitialPosition;
+
+            Vector3 deltaPosition = Vector3.Lerp(startingPosition, targetGroundCheckPosition, progress);
+
+            SetGroundCheckerLocalPosition(deltaPosition);
+
+            if (!isActive && progress < CrouchStateChangeProgressThreshold)
+                return CrouchState.StandingUp;
+            else if (isActive && progress < CrouchStateChangeProgressThreshold)
+                return CrouchState.CrouchingDown;
+
+            return CrouchState.None;
+        }
+
+        private void SetGroundCheckerLocalPosition(Vector3 position)
+        {
             _surfaceChecker.GroundCheck.localPosition = position;
         }
-
-        private float SetCrouch(bool isActive)
-            => _crouch.SetCrouch(isActive, _crouchConfig.CrouchHeight, _crouchConfig.CrouchAcceleration);
     }
 }

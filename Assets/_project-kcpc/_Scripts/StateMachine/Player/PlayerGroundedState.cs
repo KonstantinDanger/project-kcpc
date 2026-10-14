@@ -7,14 +7,9 @@ namespace ProjectKCPC.Scripts.StateMachine
     public abstract class PlayerGroundedState : PlayerState
     {
         private readonly IMovable _movement;
-        private readonly IApplyGravity _gravityApplier;
-        private readonly IExternalForceHandler _externalForceHandler;
 
         private readonly PlayerInput _input;
         private readonly SurfaceChecker _surfaceChecker;
-
-        private readonly GravityConfig _gravityConfig;
-        private readonly ExternalForceConfig _externalForceConfig;
 
         private Vector3 _movementDirection;
         private Vector2 MovementInput => _input.MovementVector;
@@ -25,24 +20,20 @@ namespace ProjectKCPC.Scripts.StateMachine
         { 
             _input = Get<PlayerInput>(player);
             _surfaceChecker = Get<SurfaceChecker>(player);
-
-            _gravityConfig = player.GravityConfig;
-            _externalForceConfig = player.ExternalForceConfig;
-
-            _gravityApplier = Get<IApplyGravity>(player);
-            _externalForceHandler = Get<IExternalForceHandler>(player);
             _movement = Get<IMovable>(player);
         }
 
-        protected override void OnUpdate(float deltaTime)
-        {
-            _gravityApplier.ApplyGravity(_gravityConfig.Gravity, _gravityConfig.MaxFallSpeed);
-            _externalForceHandler.UpdateExternalForce(_externalForceConfig.Drag);
+        protected new virtual void Update(float deltaTime) { }
 
+        protected sealed override void OnUpdate(float deltaTime)
+        {
             if (!_surfaceChecker.IsGrounded)
             {
                 Transit<PlayerAirborneState>();
+                return;
             }
+
+            Update(deltaTime);
         }
 
         protected void SetSpeed(float desiredSpeed, float speedAcceleration, float deltaTime)
