@@ -20,6 +20,8 @@ namespace FishNet.Component.Transforming.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _attachOnStop = serializedObject.FindProperty(nameof(_attachOnStop));
             _followObject = serializedObject.FindProperty(nameof(_followObject));
             _interpolation = serializedObject.FindProperty(nameof(_interpolation));
@@ -32,6 +34,8 @@ namespace FishNet.Component.Transforming.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             LayoutTools.AddObjectField("Script:", MonoScript.FromMonoBehaviour((DetachableNetworkTickSmoother)target), typeof(DetachableNetworkTickSmoother), false, EditorLayoutEnableType.Disabled);

@@ -18,6 +18,8 @@ namespace FishNet.Component.ColliderRollback
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _boundingBox = serializedObject.FindProperty(nameof(_boundingBox));
             _physicsType = serializedObject.FindProperty(nameof(_physicsType));
             _boundingBoxSize = serializedObject.FindProperty(nameof(_boundingBoxSize));
@@ -28,6 +30,8 @@ namespace FishNet.Component.ColliderRollback
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
             ColliderRollback nob = (ColliderRollback)target;
 

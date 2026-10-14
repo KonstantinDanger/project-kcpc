@@ -19,6 +19,8 @@ namespace FishNet.Managing.Timing.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _updateOrder = serializedObject.FindProperty("_updateOrder");
             _timingType = serializedObject.FindProperty("_timingType");
             _tickRate = serializedObject.FindProperty("_tickRate");
@@ -31,6 +33,8 @@ namespace FishNet.Managing.Timing.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             GUI.enabled = false;

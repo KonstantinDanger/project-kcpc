@@ -33,6 +33,9 @@ namespace FishNet.Component.Transforming.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null)
+                return;
+
             _componentConfiguration = serializedObject.FindProperty(nameof(_componentConfiguration));
             _synchronizeParent = serializedObject.FindProperty(nameof(_synchronizeParent));
             _packing = serializedObject.FindProperty(nameof(_packing));
@@ -56,6 +59,9 @@ namespace FishNet.Component.Transforming.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null)
+                return;
+
             serializedObject.Update();
 
             LayoutTools.AddObjectField("Script:", MonoScript.FromMonoBehaviour((NetworkTransform)target), typeof(NetworkTransform), false, EditorLayoutEnableType.Disabled);

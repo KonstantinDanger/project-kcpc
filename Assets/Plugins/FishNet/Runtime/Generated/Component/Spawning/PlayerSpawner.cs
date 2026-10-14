@@ -105,6 +105,7 @@ namespace FishNet.Component.Spawning
             SetSpawn(_playerPrefab.transform, out position, out rotation);
 
             NetworkObject nob = _networkManager.GetPooledInstantiated(_playerPrefab, position, rotation, true);
+            Debug.Log($"nob scene is valid: {nob.gameObject.scene.IsValid()}, name: {nob.gameObject.scene.name}, isGlobal: {nob.IsGlobal}");
             _networkManager.ServerManager.Spawn(nob, conn);
 
             // If there are no global scenes 

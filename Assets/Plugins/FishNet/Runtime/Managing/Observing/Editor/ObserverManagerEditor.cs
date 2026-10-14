@@ -20,6 +20,8 @@ namespace FishNet.Managing.Observing.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+            
             _updateHostVisibility = serializedObject.FindProperty(nameof(_updateHostVisibility));
             _maximumTimedObserversDuration = serializedObject.FindProperty(nameof(_maximumTimedObserversDuration));
             _defaultConditions = serializedObject.FindProperty(nameof(_defaultConditions));
@@ -32,6 +34,8 @@ namespace FishNet.Managing.Observing.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+            
             serializedObject.Update();
 
             GUI.enabled = false;

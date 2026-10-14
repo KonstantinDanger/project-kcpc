@@ -21,6 +21,8 @@ namespace FishNet.Transporting.Tugboat.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _stopSocketsOnThread = serializedObject.FindProperty(nameof(_stopSocketsOnThread));
             _dontRoute = serializedObject.FindProperty(nameof(_dontRoute));
             _reuseAddress = serializedObject.FindProperty(nameof(_reuseAddress));
@@ -34,6 +36,8 @@ namespace FishNet.Transporting.Tugboat.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
             Tugboat tb = (Tugboat)target;
 

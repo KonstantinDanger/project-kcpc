@@ -18,6 +18,8 @@ namespace FishNet.Transporting.Synapse.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _ipv4BindAddress = serializedObject.FindProperty(nameof(_ipv4BindAddress));
             _ipv6BindAddress = serializedObject.FindProperty(nameof(_ipv6BindAddress));
             _port = serializedObject.FindProperty(nameof(_port));
@@ -28,6 +30,8 @@ namespace FishNet.Transporting.Synapse.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
             Synapse synapse = (Synapse)target;
 

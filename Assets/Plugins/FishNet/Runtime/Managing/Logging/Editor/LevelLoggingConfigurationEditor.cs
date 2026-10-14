@@ -18,6 +18,8 @@ namespace FishNet.Managing.Logging.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _isEnabled = serializedObject.FindProperty(nameof(_isEnabled).MemberToPascalCase());
 
             _addLocalTick = serializedObject.FindProperty(nameof(_addLocalTick));
@@ -32,6 +34,8 @@ namespace FishNet.Managing.Logging.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(_isEnabled);

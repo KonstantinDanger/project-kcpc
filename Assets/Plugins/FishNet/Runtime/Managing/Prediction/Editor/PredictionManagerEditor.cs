@@ -22,6 +22,8 @@ namespace FishNet.Managing.Predicting.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             //Client.
             _reduceReconcilesWithFramerate = serializedObject.FindProperty(nameof(_reduceReconcilesWithFramerate));
             _minimumClientReconcileFramerate = serializedObject.FindProperty(nameof(_minimumClientReconcileFramerate));
@@ -37,6 +39,8 @@ namespace FishNet.Managing.Predicting.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             GUI.enabled = false;

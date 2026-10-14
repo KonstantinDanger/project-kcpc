@@ -17,6 +17,8 @@ namespace FishNet.Component.Transforming.Beta
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _initializationSettings = serializedObject.FindProperty(nameof(_initializationSettings));
             _favorPredictionNetworkTransform = serializedObject.FindProperty(nameof(_favorPredictionNetworkTransform));
             _controllerMovementSettings = serializedObject.FindProperty(nameof(_controllerMovementSettings));
@@ -25,6 +27,8 @@ namespace FishNet.Component.Transforming.Beta
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             GUI.enabled = false;

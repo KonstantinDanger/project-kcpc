@@ -1,0 +1,29 @@
+{
+  "name": "com.jbooth.microsplat.urp2021",
+  "displayName": "MicroSplat-CoreURP2021",
+  "version": "3.9.0",
+  "author": {
+    "name": "Jason Booth",
+    "email": "slipster216@gmail.com",
+    "url": "http://jdbtechservices.com/"
+  },
+  "unity": "2021.1",
+  "samples": [
+    {
+      "displayName": "URP2021 Example",
+      "description": "Example of URP2021",
+      "path": "Samples~/URP2021"
+    }
+  ],
+  "dependencies": {
+    "com.jbooth.microsplat.core": "3.9.0"
+  },
+  "description": "The URP2021 module for MicroSplat allows MicroSplat to compile it's shaders for URP 11.x, URP 12.x and URP 13.x",
+  "keywords": [
+    "MicroSplat",
+    "Terrain",
+    "Shader", 
+    "URP"
+  ],
+  "documentationUrl": "https://docs.google.com/document/d/1i29Tp5WcsFcIHCVgWV4rSnjgpw1kyENaVSSkHhgu0ro/edit?usp=sharing"
+}

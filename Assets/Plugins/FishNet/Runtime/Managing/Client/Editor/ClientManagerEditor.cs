@@ -15,6 +15,8 @@ namespace FishNet.Managing.Client.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null) return;
+
             _remoteServerTimeout = serializedObject.FindProperty(nameof(_remoteServerTimeout));
             _remoteServerTimeoutDuration = serializedObject.FindProperty(nameof(_remoteServerTimeoutDuration));
             _changeFrameRate = serializedObject.FindProperty(nameof(_changeFrameRate));
@@ -23,6 +25,8 @@ namespace FishNet.Managing.Client.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             GUI.enabled = false;

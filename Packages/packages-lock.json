@@ -7,6 +7,59 @@
       "dependencies": {},
       "hash": "0320459da446a95fc109aef66d42e1337e3b5fff"
     },
+    "com.jbooth.microsplat.alpha-hole": {
+      "version": "file:com.jbooth.microsplat.alpha-hole",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.jbooth.microsplat.core": "3.9.0"
+      }
+    },
+    "com.jbooth.microsplat.core": {
+      "version": "file:com.jbooth.microsplat.core",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.jbooth.microsplat.streams": {
+      "version": "file:com.jbooth.microsplat.streams",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.jbooth.microsplat.core": "3.9.0"
+      }
+    },
+    "com.jbooth.microsplat.terrain-blending": {
+      "version": "file:com.jbooth.microsplat.terrain-blending",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.jbooth.microsplat.core": "3.9.0"
+      }
+    },
+    "com.jbooth.microsplat.triplanar": {
+      "version": "file:com.jbooth.microsplat.triplanar",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.jbooth.microsplat.core": "3.9.0"
+      }
+    },
+    "com.jbooth.microsplat.urp2021": {
+      "version": "file:com.jbooth.microsplat.urp2021",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.jbooth.microsplat.core": "3.9.0"
+      }
+    },
+    "com.prenominal.realtimecsg": {
+      "version": "https://github.com/LogicalError/realtime-CSG-for-unity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "8ea1d81e917c538d8f4563327c2c657b50a355f0"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 1,
@@ -136,6 +189,18 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.probuilder": {
+      "version": "6.1.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.shadergraph": "17.0.3",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.settings-manager": "1.0.3"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.render-pipelines.core": {
       "version": "17.3.0",
       "depth": 0,
@@ -175,6 +240,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.settings-manager": {
+      "version": "2.1.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.shadergraph": {
       "version": "17.3.0",
       "depth": 1,
@@ -183,6 +255,27 @@
         "com.unity.render-pipelines.core": "17.3.0",
         "com.unity.searcher": "4.9.5"
       }
+    },
+    "com.unity.splines": {
+      "version": "2.9.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.settings-manager": "1.0.3"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.terrain-tools": {
+      "version": "5.3.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.terrain": "1.0.0",
+        "com.unity.modules.terrainphysics": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
       "version": "1.6.0",

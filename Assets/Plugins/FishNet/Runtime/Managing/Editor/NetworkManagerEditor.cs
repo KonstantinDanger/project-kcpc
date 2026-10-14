@@ -18,6 +18,8 @@ namespace FishNet.Managing.Editing
 
         private void OnEnable()
         {
+            if (target == null) return;
+
             _logging = serializedObject.FindProperty("_logging");
             _refreshDefaultPrefabs = serializedObject.FindProperty("_refreshDefaultPrefabs");
             _runInBackground = serializedObject.FindProperty("_runInBackground");
@@ -29,6 +31,8 @@ namespace FishNet.Managing.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             NetworkManager networkManager = (NetworkManager)target;

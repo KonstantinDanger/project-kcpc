@@ -572,7 +572,7 @@ namespace FishNet.Managing.Server
                 predictedSpawn = true;
             }
 
-            if (!networkObject.gameObject.scene.IsValid())
+            if (!networkObject.gameObject.scene.IsValid() && !networkObject.gameObject.name.Contains("(Clone)"))
             {
                 NetworkManager.LogError($"{networkObject.name} is a prefab. You must instantiate the prefab first, then use Spawn on the instantiated copy.");
                 return;
@@ -1066,7 +1066,7 @@ namespace FishNet.Managing.Server
                 predictedDespawn = true;
             }
 
-            if (!networkObject.gameObject.scene.IsValid())
+            if (!networkObject.gameObject.scene.IsValid() && !networkObject.gameObject.name.Contains("(Clone)"))
             {
                 NetworkManager.LogError($"{networkObject.name} is a prefab. You must instantiate the prefab first, then use Spawn on the instantiated copy.");
                 return;

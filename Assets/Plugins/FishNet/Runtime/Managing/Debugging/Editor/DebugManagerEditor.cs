@@ -20,6 +20,8 @@ namespace FishNet.Managing.Editing
 
         private void OnEnable()
         {
+            if (target == null) return;
+
             _writeSceneObjectDetails = serializedObject.FindProperty(nameof(_writeSceneObjectDetails).MemberToPascalCase());
             _validateRpcLengths = serializedObject.FindProperty(nameof(_validateRpcLengths).MemberToPascalCase());
             _disableObserversRpcLinks = serializedObject.FindProperty(nameof(_disableObserversRpcLinks).MemberToPascalCase());
@@ -31,6 +33,8 @@ namespace FishNet.Managing.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null) return;
+
             serializedObject.Update();
 
             DebugManager DebugManager = (DebugManager)target;

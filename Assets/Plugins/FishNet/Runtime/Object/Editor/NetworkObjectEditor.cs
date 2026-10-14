@@ -37,6 +37,9 @@ namespace FishNet.Object.Editing
 
         protected virtual void OnEnable()
         {
+            if (target == null)
+                return;
+
             _tabIndex = EditorPrefs.GetInt(TAB_INDEX_PREFS_NAME);
             _savedTabIndex = _tabIndex;
 
@@ -68,6 +71,9 @@ namespace FishNet.Object.Editing
 
         public override void OnInspectorGUI()
         {
+            if (target == null)
+                return;
+
             serializedObject.Update();
             NetworkObject nob = (NetworkObject)target;
 
