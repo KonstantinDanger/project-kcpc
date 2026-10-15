@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectKCPC.Scripts.Extensions;
+using System;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.Movement
@@ -27,9 +28,13 @@ namespace ProjectKCPC.Scripts.Movement
         private Vector3 _horizontalVelocity;
         private float _verticalVelocity;
         private float _initialControllerHeight;
+        private Vector3 _initialCenter;
 
         private void Awake()
-            => _initialControllerHeight = _controller.height;
+        {
+            _initialControllerHeight = _controller.height;
+            _initialCenter = _controller.center;
+        }
 
         public void ApplyGravity(float gravity, float maxFallSpeed)
         {
@@ -140,7 +145,11 @@ namespace ProjectKCPC.Scripts.Movement
             float crouchDelta = crouchAcceleration * Time.deltaTime;
             float currentHeight = Mathf.Lerp(_controller.height, selectedCrouchHeight, crouchDelta);
 
+            if (Mathf.Abs(currentHeight - selectedCrouchHeight) < 0.001f)
+                currentHeight = selectedCrouchHeight;
+
             _controller.height = currentHeight;
+            _controller.center = _initialCenter.WithY(_initialCenter.y - (InitialHeight - currentHeight) / 2f);
 
             return currentHeight;
         }

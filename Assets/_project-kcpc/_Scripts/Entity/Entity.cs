@@ -36,7 +36,7 @@ namespace ProjectKCPC.Scripts.Entity
         }
 
         protected virtual void OnUpdate() {}
-
+ 
         private void UpdateExternalForce() 
             => ExternalForce.UpdateExternalForce(ExternalForceConfig.Drag);
         

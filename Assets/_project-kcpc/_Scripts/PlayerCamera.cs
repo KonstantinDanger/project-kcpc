@@ -5,12 +5,14 @@ namespace ProjectKCPC.Scripts
 {
     public class PlayerCamera : MonoBehaviour
     {
-        [SerializeField] private Transform _cameraHolder;
+        [SerializeField] private UnityEngine.Transform _cameraHolder;
         
         private CameraConfig _config;
 
-        public Quaternion LookRotation => Quaternion.LookRotation(_cameraHolder.forward);
-        public Vector3 Forward => _cameraHolder.forward;
+        public Quaternion LookRotation => Quaternion.LookRotation(CameraHolder.forward);
+        public Vector3 Forward => CameraHolder.forward;
+
+        public UnityEngine.Transform CameraHolder => _cameraHolder;
 
         private float _verticalRotation;
         private float _horizontalRotation;
@@ -25,8 +27,8 @@ namespace ProjectKCPC.Scripts
 
             if (!hasAuthority)
             {
-                _cameraHolder.gameObject.SetActive(false);
-                _cameraHolder.GetComponentInChildren<Camera>().tag = StaticData.Constants.EmptyTag;
+                CameraHolder.gameObject.SetActive(false);
+                CameraHolder.GetComponentInChildren<Camera>().tag = StaticData.Constants.EmptyTag;
 
                 return;
             }
@@ -50,7 +52,7 @@ namespace ProjectKCPC.Scripts
             _verticalRotation -= verticalDelta;
             _verticalRotation = Mathf.Clamp(_verticalRotation, _config.MinRotationAngle, _config.MaxRotationAngle);
 
-            _cameraHolder.localRotation = Quaternion.Euler(_verticalRotation,_horizontalRotation, 0f);
+            CameraHolder.localRotation = Quaternion.Euler(_verticalRotation,_horizontalRotation, 0f);
 
         }
 

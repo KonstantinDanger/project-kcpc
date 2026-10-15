@@ -13,7 +13,7 @@ namespace ProjectKCPC.Scripts
 
         public Vector2 MovementVector => _movementInput;
         public Vector2 Rotation => _rotationInput;
-        public bool IsCrouching { get; private set; }
+        public bool IsCrouching { get; set; }
         public bool IsSprinting => _isSprinting;
 
         public event Action JumpAction;

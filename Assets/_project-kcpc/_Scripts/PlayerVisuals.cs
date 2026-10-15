@@ -4,7 +4,7 @@ namespace ProjectKCPC.Scripts
 {
     public class PlayerVisuals : MonoBehaviour
     {
-        [SerializeField] private Transform _parentTransform;
+        [SerializeField] private UnityEngine.Transform _parentTransform;
         [SerializeField] private SimpleRotatable _modelRotation;
         [SerializeField, Min(0f)] private float _rotationSpeed;
         private IMovable _movement;

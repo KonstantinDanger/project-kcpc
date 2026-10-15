@@ -5,8 +5,8 @@ namespace ProjectKCPC.Scripts
     public class SurfaceChecker : MonoBehaviour
     {
         [Header("Transforms")]
-        [SerializeField] private Transform _groundCheck;
-        [SerializeField] private Transform _ceilingCheck;
+        [SerializeField] private UnityEngine.Transform _groundCheck;
+        [SerializeField] private UnityEngine.Transform _ceilingCheck;
         //[SerializeField] private Transform _ledgeCheck;
         //[SerializeField] private BoxCollider _aboveLedgeCheck;
 
@@ -14,6 +14,7 @@ namespace ProjectKCPC.Scripts
         [SerializeField, Min(0f)] private float _slopeCheckDistance = 1f;
         [SerializeField, Min(0f)] private float _groundCheckRadius = 0.4f;
         [SerializeField, Min(0f)] private float _ceilingCheckRadius = 0.4f;
+        [SerializeField, Min(0f)] private float _ceilingCheckDistance = 0.4f;
         //[SerializeField, Min(0f)] private float _ledgeCheckRadius = 0.4f;
         //[SerializeField, Min(0f)] private float _ledgeAboveCheckDistance = 1f;
 
@@ -27,7 +28,18 @@ namespace ProjectKCPC.Scripts
 
         public bool IsGrounded => Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundLayer, QueryTriggerInteraction.Ignore);
 
-        public bool IsUnderCeiling => Physics.CheckSphere(_ceilingCheck.position, _ceilingCheckRadius, _ceilingLayer, QueryTriggerInteraction.Ignore);
+        public bool IsUnderCeiling
+        {
+            get
+            {
+                Ray ray = new(_ceilingCheck.position, Vector3.up);
+                return Physics.SphereCast(ray,
+                    _ceilingCheckRadius,
+                    _ceilingCheckDistance,
+                    _ceilingLayer,
+                    QueryTriggerInteraction.Ignore);
+            }
+        }
 
         //public bool LedgeDetected => Physics.CheckSphere(_ledgeCheck.position, _ledgeCheckRadius, _ledgeLayer, QueryTriggerInteraction.Ignore);
 
@@ -35,7 +47,7 @@ namespace ProjectKCPC.Scripts
 
         //public Vector3 AboveLedgeCheckPosition => _aboveLedgeCheck.bounds.center + _aboveLedgeCheck.transform.forward * _ledgeAboveCheckDistance;
 
-        public Transform GroundCheck => _groundCheck;
+        public UnityEngine.Transform GroundCheck => _groundCheck;
 
         public RaycastHit SlopeHitInfo
         {
@@ -83,7 +95,11 @@ namespace ProjectKCPC.Scripts
                 Gizmos.DrawSphere(_groundCheck.position, _groundCheckRadius);
 
             if (_ceilingCheck != null)
+            {
+                Gizmos.DrawRay(_ceilingCheck.position, Vector3.up * _ceilingCheckDistance);
                 Gizmos.DrawSphere(_ceilingCheck.position, _ceilingCheckRadius);
+                Gizmos.DrawSphere(_ceilingCheck.position + Vector3.up * _ceilingCheckDistance, _ceilingCheckRadius);
+            }
             //Gizmos.DrawSphere(_ledgeCheck.position, _ledgeCheckRadius);
 
             //Gizmos.color = !IsLedgeAboveEmpty ? Color.red : Color.green;

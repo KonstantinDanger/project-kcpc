@@ -1,5 +1,4 @@
-﻿using ProjectKCPC.Scripts.Config;
-using ProjectKCPC.Scripts.Entity;
+﻿using ProjectKCPC.Scripts.Entity;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.StateMachine 

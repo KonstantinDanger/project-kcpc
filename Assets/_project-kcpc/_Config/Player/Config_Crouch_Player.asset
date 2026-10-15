@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860d2419ece09fb49a8646034d774159, type: 3}
   m_Name: Config_Crouch_Player
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.Config.CrouchConfig
-  <CrouchHeight>k__BackingField: 0.5
-  <CrouchAcceleration>k__BackingField: 3.68
+  <CrouchHeight>k__BackingField: 0.8
+  <CrouchAcceleration>k__BackingField: 4.9
   <CrouchSpeed>k__BackingField: 3
