@@ -8,6 +8,8 @@ namespace ProjectKCPC.Scripts.Movement
     [RequireComponent(typeof(SurfaceChecker))]
     public class CharacterControllerPlayerMovement : MonoBehaviour, IMovable, IApplyGravity, IExternalForceHandler, IJumpable, ICrouchable
     {
+        private const float AirborneSlopeLimit = 90f;
+
         public event Action OnMove;
 
         [SerializeField] private CharacterController _controller;
@@ -29,11 +31,18 @@ namespace ProjectKCPC.Scripts.Movement
         private float _verticalVelocity;
         private float _initialControllerHeight;
         private Vector3 _initialCenter;
+        private float _initialSlopeLimit;
 
         private void Awake()
         {
             _initialControllerHeight = _controller.height;
             _initialCenter = _controller.center;
+            _initialSlopeLimit = _controller.slopeLimit;
+        }
+
+        private void Update()
+        {
+            _controller.slopeLimit = _surfaceChecker.IsGrounded ? _initialSlopeLimit : AirborneSlopeLimit;
         }
 
         public void ApplyGravity(float gravity, float maxFallSpeed)

@@ -1,7 +1,6 @@
 ﻿using ProjectKCPC.Scripts.Config;
 using ProjectKCPC.Scripts.Entity;
 using ProjectKCPC.Scripts.Extensions;
-using System;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts.StateMachine 
@@ -81,7 +80,6 @@ namespace ProjectKCPC.Scripts.StateMachine
             float progress = Mathf.Clamp01(shrinkedHeight / heightToShrink);
             progress = isActive ? progress : 1 - progress;
 
-            //HandleGroundCheckerPosition(isActive, progress, heightToShrink);
             HandleCameraPosition(isActive, progress, heightToShrink);
 
             if (!isActive && progress < CrouchStateChangeProgressThreshold)
