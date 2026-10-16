@@ -64,8 +64,9 @@ namespace ProjectKCPC.Scripts.Entity
         {
             Vector2 moveInput = _input.MovementVector;
 
-            Vector3 projectedForward = Vector3.ProjectOnPlane(_directionPivot.forward, transform.up).normalized;
             Vector3 projectedRight = Vector3.ProjectOnPlane(_directionPivot.right, transform.up).normalized;
+
+            Vector3 projectedForward = Vector3.Cross(projectedRight, transform.up).normalized;
 
             _movementInputDirection = projectedForward * moveInput.y + projectedRight * moveInput.x;
             _movementInputDirection.Normalize();
