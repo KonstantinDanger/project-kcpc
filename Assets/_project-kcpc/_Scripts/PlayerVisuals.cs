@@ -1,8 +1,9 @@
+using FishNet.Object;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts
 {
-    public class PlayerVisuals : MonoBehaviour
+    public class PlayerVisuals : NetworkBehaviour
     {
         [Header("Animation")]
         [SerializeField] private Animator _animator;
@@ -19,6 +20,14 @@ namespace ProjectKCPC.Scripts
         private void Start()
         {
             _movement = _parentTransform.GetComponent<IMovable>();
+        }
+
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+
+            if (!IsOwner)
+                enabled = false;
         }
 
         private void Update()

@@ -1211,7 +1211,11 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 6885196710790601694}
   _networkObjectCache: {fileID: 0}
-  IgnoredParameters: []
+  IgnoredParameters:
+  - IsGrounded
+  - AnimationSpeed
+  - AirborneVelocity
+  - RotationDeltaDegrees
   _animator: {fileID: 4470651915333659850}
   _synchronizeWhenDisabled: 0
   _smoothFloats: 1

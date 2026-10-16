@@ -132,6 +132,9 @@ namespace ProjectKCPC.Scripts.Movement
 
         public void UpdateExternalForce(float drag)
         {
+            if (!_controller.enabled)
+                return;
+
             _externalForce *= 1f / (1f + drag * Time.deltaTime);
 
             _controller.Move(_externalForce);
