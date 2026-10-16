@@ -317,6 +317,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a06eda95d320049bf90f22e5613852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.PlayerVisuals
+  _animator: {fileID: 4470651915333659850}
+  _horizontalVelocityParamName: HorizontalVelocity
+  _verticalVelocityParamName: VerticalVelocity
   _parentTransform: {fileID: 807821068713035006}
   _modelRotation: {fileID: 3038359835426352420}
   _rotationSpeed: 8
@@ -1131,6 +1134,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 776b82502ec64b045b1dd2a80af8fbfe, type: 2}
+    - target: {fileID: 5866666021909216657, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6240733294840144465, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1170,8 +1181,43 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4605817933998953265}
   m_SourcePrefab: {fileID: 100100000, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
+--- !u!95 &4470651915333659850 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
+  m_PrefabInstance: {fileID: 8025528417101369691}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7179034961396919306 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
+  m_PrefabInstance: {fileID: 8025528417101369691}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4605817933998953265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7179034961396919306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Component.Animating.NetworkAnimator
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 6885196710790601694}
+  _networkObjectCache: {fileID: 0}
+  IgnoredParameters: []
+  _animator: {fileID: 4470651915333659850}
+  _synchronizeWhenDisabled: 0
+  _smoothFloats: 1
+  _interpolation: 2
+  _clientAuthoritative: 1
+  _sendToOwner: 0
 --- !u!4 &7560100040335439536 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ec8b73cf9bc6be94fab78f6b252851e7, type: 3}
