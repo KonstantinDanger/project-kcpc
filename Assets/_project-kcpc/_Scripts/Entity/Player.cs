@@ -29,15 +29,11 @@ namespace ProjectKCPC.Scripts.Entity
         private void OnEnable()
         {
             _input.Enable();
-
-            _input.JumpAction += HandleJump;
         }
 
         private void OnDisable()
         {
             _input.Disable();
-         
-            _input.JumpAction -= HandleJump;
         }
 
         public override void OnStartClient()
@@ -70,14 +66,6 @@ namespace ProjectKCPC.Scripts.Entity
 
             _movementInputDirection = projectedForward * moveInput.y + projectedRight * moveInput.x;
             _movementInputDirection.Normalize();
-        }
-
-        private void HandleJump()
-        {
-            if (!HasActionAuthority())
-                return;
-
-            Jump.Jump(JumpConfig.JumpHeight, GravityConfig.Gravity);
         }
 
         private void Rotate()

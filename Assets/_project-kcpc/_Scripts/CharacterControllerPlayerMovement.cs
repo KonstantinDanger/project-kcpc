@@ -148,10 +148,10 @@ namespace ProjectKCPC.Scripts.Movement
             _controller.enabled = true;
         }
 
-        public float SetCrouch(bool isCrouching, float crouchHeight, float crouchAcceleration)
+        public float SetCrouch(bool isCrouching, float crouchHeight, float crouchSpeed)
         {
             float selectedCrouchHeight = isCrouching ? crouchHeight : _initialControllerHeight;
-            float crouchDelta = crouchAcceleration * Time.deltaTime;
+            float crouchDelta = crouchSpeed * Time.deltaTime;
             float currentHeight = Mathf.Lerp(_controller.height, selectedCrouchHeight, crouchDelta);
 
             if (Mathf.Abs(currentHeight - selectedCrouchHeight) < 0.001f)
@@ -165,5 +165,11 @@ namespace ProjectKCPC.Scripts.Movement
 
         /*[ClientRpc]*/
         private void RpcOnMove() => OnMove?.Invoke();
+
+        public void ResetHeightToDefault()
+        {
+            _controller.center = _initialCenter;
+            _controller.height = _initialControllerHeight;
+        }
     }
 }

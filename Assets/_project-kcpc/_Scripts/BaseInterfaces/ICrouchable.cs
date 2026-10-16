@@ -12,5 +12,6 @@
         /// <param name="crouchAcceleration"></param>
         /// <returns></returns>
         float SetCrouch(bool isCrouching, float crouchHeight, float crouchAcceleration);
+        void ResetHeightToDefault();
     }
 }

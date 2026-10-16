@@ -15,5 +15,5 @@ MonoBehaviour:
   <WalkSpeed>k__BackingField: 6
   <SprintSpeed>k__BackingField: 10
   <MovementSmoothness>k__BackingField: 0.1
-  <AirMovementAcceleration>k__BackingField: 100
+  <AirMovementAcceleration>k__BackingField: 40
   <SpeedChangeAcceleration>k__BackingField: 7.79

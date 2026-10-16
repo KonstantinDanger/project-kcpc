@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Config_Crouch_Player
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.Config.CrouchConfig
   <CrouchHeight>k__BackingField: 0.8
-  <CrouchAcceleration>k__BackingField: 4.9
+  <CrouchTransitionSpeed>k__BackingField: 6
+  <CrouchRapidTransitionSpeed>k__BackingField: 15
   <CrouchSpeed>k__BackingField: 3
