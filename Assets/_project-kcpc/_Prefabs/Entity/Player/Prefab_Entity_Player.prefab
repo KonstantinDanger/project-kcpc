@@ -317,9 +317,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a06eda95d320049bf90f22e5613852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectKCPC.Scripts.PlayerVisuals
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 6885196710790601694}
+  _networkObjectCache: {fileID: 0}
   _animator: {fileID: 4470651915333659850}
   _horizontalVelocityParamName: HorizontalVelocity
   _verticalVelocityParamName: VerticalVelocity
+  _player: {fileID: 2852690475253440403}
   _parentTransform: {fileID: 807821068713035006}
   _modelRotation: {fileID: 3038359835426352420}
   _rotationSpeed: 8

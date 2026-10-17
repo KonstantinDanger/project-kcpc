@@ -19,6 +19,7 @@ namespace ProjectKCPC.Scripts.Entity
         private IStateMachine _stateMachine;
         private Vector3 _movementInputDirection;
 
+        public Vector3 ProjectedForward { get; private set; }
         public Vector3 CachedMovementDirection => _movementInputDirection;
 
         private void Awake()
@@ -62,9 +63,9 @@ namespace ProjectKCPC.Scripts.Entity
 
             Vector3 projectedRight = Vector3.ProjectOnPlane(_directionPivot.right, transform.up).normalized;
 
-            Vector3 projectedForward = Vector3.Cross(projectedRight, transform.up).normalized;
+            ProjectedForward = Vector3.Cross(projectedRight, transform.up).normalized;
 
-            _movementInputDirection = projectedForward * moveInput.y + projectedRight * moveInput.x;
+            _movementInputDirection = ProjectedForward * moveInput.y + projectedRight * moveInput.x;
             _movementInputDirection.Normalize();
         }
 

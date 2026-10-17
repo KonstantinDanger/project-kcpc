@@ -1,4 +1,5 @@
 using FishNet.Object;
+using ProjectKCPC.Scripts.Entity;
 using UnityEngine;
 
 namespace ProjectKCPC.Scripts
@@ -11,6 +12,7 @@ namespace ProjectKCPC.Scripts
         [SerializeField] private string _verticalVelocityParamName = "VerticalVelocity";
 
         [Header("Misc")]
+        [SerializeField] private Player _player;
         [SerializeField] private Transform _parentTransform;
         [SerializeField] private SimpleRotatable _modelRotation;
         [SerializeField, Min(0f)] private float _rotationSpeed;
@@ -32,19 +34,20 @@ namespace ProjectKCPC.Scripts
 
         private void Update()
         {
-            Vector3 velocity = _movement.Velocity;
-            velocity.y = 0f;
+            Vector3 velocity = transform.InverseTransformDirection(_movement.Velocity);
 
             if (velocity.sqrMagnitude > 1f)
-                _modelRotation.Rotate(velocity, _rotationSpeed);
+            {
+                _modelRotation.Rotate(_player.ProjectedForward, _rotationSpeed);
+            }
 
-            UpdateMovementAnimations();
+            UpdateMovementAnimations(velocity);
         }
 
-        private void UpdateMovementAnimations()
+        private void UpdateMovementAnimations(Vector3 velocity)
         {
-            _animator.SetFloat(_horizontalVelocityParamName, _movement.Velocity.x);
-            _animator.SetFloat(_verticalVelocityParamName, _movement.Velocity.z);
+            _animator.SetFloat(_horizontalVelocityParamName, velocity.x);
+            _animator.SetFloat(_verticalVelocityParamName, velocity.z);
         }
     }
 }
